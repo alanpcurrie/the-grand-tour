@@ -1,28 +1,37 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Content></Content>
+    <TitleText></TitleText>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Content from "@/components/organisms/Content";
+import TitleText from "@/components/molecules/TitleText";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    Content,
+    TitleText,
   }
-}
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+ @import '@/assets/styles/reset.scss';
+  @import '@/assets/styles/colors.scss';
+
+  #app {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-solar-sand);
+
+    grid-template-columns: 1fr;
+    grid-template-areas:
+     "content"
+     "footer";
+  }
+
 </style>
