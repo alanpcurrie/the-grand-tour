@@ -19,19 +19,18 @@ export default {
 </script>
 
 <style lang="scss">
- @import '@/assets/styles/reset.scss';
-  @import '@/assets/styles/colors.scss';
+ @import '@/assets/styles/global.scss';
 
-  #app {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    background-color: var(--color-solar-sand);
+   #app {
+     display: grid;
+     width: 100vw;
+     height: 100vh;
+     background-color: var(--color-solar-sand);
 
-    grid-template-columns: 1fr;
-    grid-template-areas:
-     "content"
-     "footer";
-  }
+     grid-template-columns: 1fr;
+     grid-template-areas:
+      "content"
+      "footer";
+   }
 
 </style>
