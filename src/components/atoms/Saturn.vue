@@ -24,38 +24,33 @@ export default {
 <style lang="scss" scoped>
 .saturn {
   position: relative;
-  top: -8rem;
-  right: 13rem;
-  z-index: 0;
-  margin: 0 auto;
-  padding: 1rem;
-  width: 1000px;
-  height: 1000px;
-  transform: rotateZ(-45deg);
+  margin: auto;
+  width: 400px;
+  height: 400px;
+  transform: rotateZ(-55deg);
 }
 
 .planet {
   position: absolute;
   top: 110px;
-  left: 180px;
-  width: 500px;
-  height: 500px;
+  left: 110px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
-  background: green;
+  background: var(--color-dune-blue);
 
   &--bg {
-     background: var(--color-dune-blue);
+    background: var(--color-dune-blue);
   }
 }
 
+.top {
+  clip: rect(0px, 180px, 90px, 0px);
+}
 
-// .top {
-//   clip: rect(0px, 180px, 90px, 0px);
-// }
-
-// .bottom {
-//   clip: rect(90px, 180px, 180px, 0px);
-// }
+.bottom {
+  clip: rect(90px, 180px, 180px, 0px);
+}
 
 .rings {
   position: relative;
