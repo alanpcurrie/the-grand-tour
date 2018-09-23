@@ -1,23 +1,18 @@
 <template>
   <div class="content">
-    <Planet></Planet>
-    <Planet></Planet>
-    <Planet></Planet>
+    <Saturn></Saturn>
     <SpaceFleet></SpaceFleet>
-    <Planet></Planet>
-    <Planet></Planet>
-    <Planet></Planet>
   </div>
 </template>
 
 <script>
-import Planet from "@/components/atoms/Planet";
+import Saturn from "@/components/atoms/Saturn";
 import SpaceFleet from "@/components/molecules/SpaceFleet";
 
 export default {
   name: "app",
   components: {
-    Planet,
+    Saturn,
     SpaceFleet
   }
 };

@@ -1,8 +1,10 @@
 <template>
 <div>
-  <div class="saturn">
-  <div class="rings"></div>
-</div>
+    <div class="saturn">
+        <div class="planet bottom planet--bg"></div>
+        <div class="rings"></div>
+        <div class="planet top planet--bg"></div>
+  </div>
 </div>
 </template>
 
@@ -21,7 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .saturn {
-  position: absolute;
+  position: relative;
   top: -8rem;
   right: 13rem;
   z-index: 0;
@@ -31,6 +33,29 @@ export default {
   height: 1000px;
   transform: rotateZ(-45deg);
 }
+
+.planet {
+  position: absolute;
+  top: 110px;
+  left: 180px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: green;
+
+  &--bg {
+     background: var(--color-dune-blue);
+  }
+}
+
+
+// .top {
+//   clip: rect(0px, 180px, 90px, 0px);
+// }
+
+// .bottom {
+//   clip: rect(90px, 180px, 180px, 0px);
+// }
 
 .rings {
   position: relative;

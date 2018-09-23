@@ -7,7 +7,7 @@
     </span>
        <div class="footer__bottom">
       <span class="section__left-text">
-        <p class="planet-text">JUPITER  /  SATURN  /  URANUS  /  NEPTUNE </p>
+        <p class="planet-text">JUPITER  <span class="planet-text__slash">/</span> SATURN   <span class="planet-text__slash">/</span>   URANUS   <span class="planet-text__slash">/</span>   NEPTUNE </p>
         <p class="tourist-text">EXPERIENCE THE GHARM OF GRAVITY ASSISTS </p>
       </span>
       <P class="arrow-label-text">EVERY <span class="arrow-label-text--oval">173</span> YEARS</P>
@@ -33,6 +33,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    padding: 1rem;
   }
 }
 
@@ -74,6 +75,10 @@ export default {
   font-size: 1rem;
   font-family: "Roboto", sans-serif;
   line-height: 2rem;
+
+  &__slash {
+    color: var(--color-yoda-green);
+  }
 }
 
 .tourist-text {
@@ -102,7 +107,8 @@ export default {
     height: 0;
     border-width: 42px 20px 42px 0;
     border-style: solid;
-    border-color: transparent var(--color-space-suit-orange) transparent transparent;
+    border-color: transparent var(--color-space-suit-orange) transparent
+      transparent;
     content: "";
   }
 
