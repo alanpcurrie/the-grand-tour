@@ -23,7 +23,9 @@ export default {
 <style lang="scss" scoped>
 
   .content {
+    display: grid;
     grid-template-areas: content;
+    margin: 0 auto;
   }
 
 </style>
