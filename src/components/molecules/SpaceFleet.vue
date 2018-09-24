@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="spacefleet">
     <SpaceShip></SpaceShip>
     <SpaceShip></SpaceShip>
     <SpaceShip></SpaceShip>

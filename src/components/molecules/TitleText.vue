@@ -1,17 +1,21 @@
 <template>
   <div class="footer">
-    <span class="section__title-text">
+    <div class="section__title-text">
       <p class="intro-text">A ONCE IN A LIFETIME GETAWAY</p>
       <h1 class="title-text">THE GRAND TOUR</h1>
       <hr class="title-text__underline">
-    </span>
-       <div class="footer__bottom">
-      <span class="section__left-text">
+    </div>
+    <div class="footer__bottom">
+      <div class="section__left-text">
         <p class="planet-text">JUPITER  <span class="planet-text__slash">/</span> SATURN   <span class="planet-text__slash">/</span>   URANUS   <span class="planet-text__slash">/</span>   NEPTUNE </p>
         <p class="tourist-text">EXPERIENCE THE GHARM OF GRAVITY ASSISTS </p>
-      </span>
-      <P class="arrow-label-text">EVERY <span class="arrow-label-text--oval">173</span> YEARS</P>
-      <P class="boarding-label-text">NOW BOARDING</P>
+      </div>
+       <div class="section__center-text">
+         <P class="arrow-label-text">EVERY <span class="arrow-label-text--oval">173</span> YEARS</P>
+      </div>
+        <div class="section__right-text">
+           <P class="boarding-label-text">NOW BOARDING</P>
+        </div>
     </div>
   </div>
 </template>
@@ -27,13 +31,14 @@ export default {
 
 <style scoped lang="scss">
 .footer {
-  grid-area: footer;
+  grid-template-areas: footer;
 
   &__bottom {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
     padding: 1rem;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: calc(5px + 0.1vw);
   }
 }
 
@@ -49,6 +54,14 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
+  &__center-text {
+    padding: 1rem;
+  }
+
+  &__right-text {
+    padding: 1rem;
+  }
 }
 
 .intro-text {
@@ -59,7 +72,7 @@ export default {
 }
 
 .title-text {
-  font-size: 10rem;
+  font-size: calc(9rem + 1.5vw);
   font-family: Anton, sans-serif;
 
   &__underline {
@@ -93,6 +106,7 @@ export default {
   display: inline-flex;
   align-items: center;
   justify-content: space-around;
+  text-align: center;
   padding: 0.8rem;
   width: 12rem;
   height: 2.5rem;
@@ -126,5 +140,6 @@ export default {
   padding: 1rem;
   border: 2px solid var(--color-dune-blue);
   font-size: 2rem;
+  text-align: center;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <Saturn></Saturn>
+      <Saturn></Saturn>
     <SpaceFleet></SpaceFleet>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
 <style lang="scss" scoped>
 
   .content {
-    grid-area: content;
+    grid-template-areas: content;
   }
 
 </style>

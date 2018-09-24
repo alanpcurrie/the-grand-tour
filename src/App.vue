@@ -21,16 +21,17 @@ export default {
 <style lang="scss">
  @import '@/assets/styles/global.scss';
 
+ body {
+    background-color: var(--color-solar-sand);
+ }
+
    #app {
      display: grid;
-     width: 100vw;
+     max-width: 80vw;
+     max-height: 75vw;
+     margin: 0 auto;
      height: 100vh;
      background-color: var(--color-solar-sand);
-
-     grid-template-columns: 1fr;
-     grid-template-areas:
-      "content"
-      "footer";
    }
 
 </style>
