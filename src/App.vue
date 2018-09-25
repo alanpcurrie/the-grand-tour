@@ -28,9 +28,7 @@ export default {
    #app {
      display: grid;
      max-width: 80vw;
-     max-height: 75vw;
      margin: 0 auto;
-     height: 100vh;
      background-color: var(--color-solar-sand);
    }
 

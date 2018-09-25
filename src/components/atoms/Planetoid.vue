@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Planet",
+  name: "Planetoid",
   props: {
     size: String,
     color: String,
@@ -26,7 +26,7 @@ export default {
   height: 360px;
   border-radius: 50%;
   z-index: 2;
-  background: var(--color-space-suit-orange);
+  background: var(--color-xenomorph-green);
 }
 
 </style>
