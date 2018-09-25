@@ -3,8 +3,11 @@
     <div class="saturn">
         <div class="planet__eclipse--one"></div>
         <div class="planet__eclipse--two"></div>
+        <div class="planet__eclipse--two--semi"> </div>
         <div class="planet__eclipse--three"></div>
+        <div class="planet__eclipse--three--semi"> </div>
         <div class="planet__eclipse--four"></div>
+        <div class="planet__eclipse--four--semi"> </div>
         <div class="planet planet__bottom planet--bg"></div>
         <div class="saturn__rings"></div>
         <div class="planet planet__top planet--bg"></div>
@@ -92,12 +95,13 @@ export default {
 
 .planet {
   position: absolute;
+  z-index: 2;
   top: 27.5vw;
   left: 27.5vw;
   width: 45vw;
   height: 45vw;
   border-radius: 50%;
-  background: rgba(#0198ad, 0.6);
+  background: rgba(#0198ad, 0.5);
 
   &__top {
     clip: rect(0px, 45vw, 22.5vw, 0px);
@@ -108,7 +112,7 @@ export default {
   } */
 
   &--bg {
-    background: rgba(#0198ad, 0.6);
+    background: rgba(#0198ad, 0.5);
   }
 
   &__eclipse {
@@ -119,7 +123,7 @@ export default {
       width: 22.5vw;
       height: 22.5vw;
       border-radius: 50%;
-      z-index: 4;
+      z-index: 8;
       background: rgba(#006740, 0.9);
     }
 
@@ -127,11 +131,24 @@ export default {
       position: absolute;
       top: 28.3vw;
       left: 32vw;
-      height: 31vw;
+      height: 32vw;
       width: 32vw;
       border-radius: 50%;
-      z-index: 3;
+      z-index: 4;
       background: rgba(#007f46, 0.8);
+
+      &--semi {
+        /* position: absolute;
+        top: 28.3vw;
+        left: 32vw;
+        height: 19vw;
+        width: 31.5vw;
+        border-radius: 64vw 64vw 0 0;
+        z-index: 5;
+        background: rgba(#007f46, 0.5);
+        transform: rotate(358deg);
+        overflow: hidden; */
+      }
     }
 
     &--three {
@@ -142,7 +159,20 @@ export default {
       height: 38vw;
       border-radius: 50%;
       z-index: 2;
-      background: rgba(#007f46, 0.72);
+      background: rgba(#007f46, 1);
+
+      &--semi {
+        /* position: absolute;
+        top: 27.3vw;
+        left: 32vw;
+        height: 20vw;
+        width: 35vw;
+        border-radius: 64vw 64vw 0 0;
+        z-index: 6;
+        background: rgba(#007f46, 0.6);
+        transform: rotate(358deg);
+        overflow: hidden; */
+      }
     }
 
     &--four {
@@ -153,7 +183,20 @@ export default {
       height: 42vw;
       border-radius: 50%;
       z-index: 1;
-      background: rgba(#0198ad, 0.9);
+      background: rgba(#0198ad, 0.7);
+
+      /* &--semi {
+        position: absolute;
+        top: 27.3vw;
+        left: 30vw;
+        height: 21vw;
+        width: 40vw;
+        border-radius: 64vw 64vw 0 0;
+        z-index: 1;
+        background: rgba(#0198ad, 0.7);
+        transform: rotate(358deg);
+        overflow: hidden;
+      } */
     }
   }
 }
