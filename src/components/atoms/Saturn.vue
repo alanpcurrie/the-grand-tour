@@ -8,9 +8,10 @@
         <div class="planet__eclipse--three--semi"> </div>
         <div class="planet__eclipse--four"></div>
         <div class="planet__eclipse--four--semi"> </div>
-        <div class="planet planet__bottom planet--bg"></div>
+        <div class="planet planet__bottom"></div>
         <div class="saturn__rings"></div>
-        <div class="planet planet__top planet--bg"></div>
+        <div class="planet--semi"> </div>
+        <div class="planet planet__top"></div>
       </div>
   </div>
 </template>
@@ -101,18 +102,10 @@ export default {
   width: 45vw;
   height: 45vw;
   border-radius: 50%;
-  background: rgba(#0198ad, 0.5);
+  background: rgba(#0198ad, 0.7);
 
   &__top {
     clip: rect(0px, 45vw, 22.5vw, 0px);
-  }
-
-  /* &__bottom {
-    clip: rect(11.25vw, 22.5vw, 22.5vw, 0px);
-  } */
-
-  &--bg {
-    background: rgba(#0198ad, 0.5);
   }
 
   &__eclipse {
@@ -135,19 +128,19 @@ export default {
       width: 32vw;
       border-radius: 50%;
       z-index: 4;
-      background: rgba(#007f46, 0.8);
+      background: rgba(#007f46, 1);
 
       &--semi {
-        /* position: absolute;
+        position: absolute;
         top: 28.3vw;
         left: 32vw;
         height: 19vw;
         width: 31.5vw;
         border-radius: 64vw 64vw 0 0;
         z-index: 5;
-        background: rgba(#007f46, 0.5);
+        background: rgba(#007f46, 0.9);
         transform: rotate(358deg);
-        overflow: hidden; */
+        overflow: hidden;
       }
     }
 
@@ -158,18 +151,18 @@ export default {
       width: 38vw;
       height: 38vw;
       border-radius: 50%;
-      z-index: 2;
-      background: rgba(#007f46, 1);
+      z-index: 3;
+      background: rgba(#007f46, 0.5);
 
       &--semi {
         /* position: absolute;
         top: 27.3vw;
         left: 32vw;
         height: 20vw;
-        width: 35vw;
+        width: 40vw;
         border-radius: 64vw 64vw 0 0;
-        z-index: 6;
-        background: rgba(#007f46, 0.6);
+        z-index: 5;
+        background: red;
         transform: rotate(358deg);
         overflow: hidden; */
       }
@@ -183,7 +176,7 @@ export default {
       height: 42vw;
       border-radius: 50%;
       z-index: 1;
-      background: rgba(#0198ad, 0.7);
+      background: rgba(#0198ad, 0.5);
 
       /* &--semi {
         position: absolute;

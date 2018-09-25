@@ -32,7 +32,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/styles/global.scss";
 .footer {
-  grid-template-areas: "footer";
+  display: grid;
 
   &__bottom {
     padding: 1rem;
@@ -40,6 +40,7 @@ export default {
     grid-template-rows: 1fr;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: calc(5px + 0.1vw);
+    grid-template-areas: "footer";
 
     @include md {
       grid-template-areas: "footer footer footer";
