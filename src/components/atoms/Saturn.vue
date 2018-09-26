@@ -1,17 +1,19 @@
 <template>
  <div class="saturn__wrapper">
     <div class="saturn">
-        <div class="planet__eclipse--one"></div>
-        <div class="planet__eclipse--two"></div>
-        <div class="planet__eclipse--two--semi"> </div>
-        <div class="planet__eclipse--three"></div>
-        <div class="planet__eclipse--three--semi"> </div>
+
+        <div class="planet"></div>
+        <div class="planet--semi"> </div>
         <div class="planet__eclipse--four"></div>
         <div class="planet__eclipse--four--semi"> </div>
-        <div class="planet planet__bottom"></div>
-        <div class="saturn__rings"></div>
-        <div class="planet--semi"> </div>
-        <div class="planet planet__top"></div>
+        <div class="planet__eclipse--three"></div>
+        <div class="planet__eclipse--three--semi"> </div>
+        <div class="planet__eclipse--two"></div>
+        <div class="planet__eclipse--two--semi"> </div>
+        <div class="planet__eclipse--one"></div>
+         <div class="planet bottom planet--bg"></div>
+         <div class="planet planet__top planet--bg"></div>
+         <div class="saturn__rings"></div>
       </div>
   </div>
 </template>
@@ -53,7 +55,7 @@ export default {
   }
 
   &__rings {
-    position: relative;
+    position: absolute;
     width: 100%;
     height: 100%;
     background: radial-gradient(
@@ -71,9 +73,9 @@ export default {
     );
     transform: rotateX(82deg);
   }
-  &::before {
+  &::after {
     content: "";
-    z-index: 5;
+    z-index: 0;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -96,16 +98,29 @@ export default {
 
 .planet {
   position: absolute;
-  z-index: 2;
+  z-index: 0;
   top: 27.5vw;
   left: 27.5vw;
   width: 45vw;
   height: 45vw;
   border-radius: 50%;
-  background: rgba(#0198ad, 0.7);
+  background: rgba(#00817b, 0.5);
 
   &__top {
-    clip: rect(0px, 45vw, 22.5vw, 0px);
+    clip-path: rect(0px, 45vw, 22.5vw, 0px);
+  }
+
+  &--semi {
+    position: absolute;
+    top: 27vw;
+    left: 27vw;
+    height: 22vw;
+    width: 45vw;
+    border-radius: 64vw 64vw 0 0;
+    z-index: 0;
+    background: rgba(#00817b, 0.8);
+    transform: rotate(359deg);
+    overflow: hidden;
   }
 
   &__eclipse {
@@ -116,8 +131,8 @@ export default {
       width: 22.5vw;
       height: 22.5vw;
       border-radius: 50%;
-      z-index: 8;
-      background: rgba(#006740, 0.9);
+      z-index: 0;
+      background: rgba(#003823, 0.7);
     }
 
     &--two {
@@ -127,8 +142,8 @@ export default {
       height: 32vw;
       width: 32vw;
       border-radius: 50%;
-      z-index: 4;
-      background: rgba(#007f46, 1);
+      z-index: 0;
+      background: rgba(#006740, 0.9);
 
       &--semi {
         position: absolute;
@@ -137,8 +152,8 @@ export default {
         height: 19vw;
         width: 31.5vw;
         border-radius: 64vw 64vw 0 0;
-        z-index: 5;
-        background: rgba(#007f46, 0.9);
+        z-index: 0;
+        background: rgba(#006740, 0.6);
         transform: rotate(358deg);
         overflow: hidden;
       }
@@ -151,20 +166,20 @@ export default {
       width: 38vw;
       height: 38vw;
       border-radius: 50%;
-      z-index: 3;
-      background: rgba(#007f46, 0.5);
+      z-index: 20;
+      background: #007444;
 
       &--semi {
-        /* position: absolute;
+        position: absolute;
         top: 27.3vw;
-        left: 32vw;
-        height: 20vw;
-        width: 40vw;
+        left: 29.2vw;
+        height: 19.7vw;
+        width: 38vw;
         border-radius: 64vw 64vw 0 0;
-        z-index: 5;
-        background: red;
-        transform: rotate(358deg);
-        overflow: hidden; */
+        z-index: 12;
+        background: rgba(#007444, 0.7);
+        transform: rotate(359deg);
+        overflow: hidden;
       }
     }
 
@@ -175,21 +190,21 @@ export default {
       width: 42vw;
       height: 42vw;
       border-radius: 50%;
-      z-index: 1;
-      background: rgba(#0198ad, 0.5);
+      z-index: 20;
+      background: #00989a;
 
-      /* &--semi {
+      &--semi {
         position: absolute;
         top: 27.3vw;
-        left: 30vw;
-        height: 21vw;
-        width: 40vw;
+        left: 28vw;
+        height: 22vw;
+        width: 42vw;
         border-radius: 64vw 64vw 0 0;
-        z-index: 1;
-        background: rgba(#0198ad, 0.7);
+        z-index: 12;
+        background: rgba(#0198ad, 0.1);
         transform: rotate(358deg);
         overflow: hidden;
-      } */
+      }
     }
   }
 }
