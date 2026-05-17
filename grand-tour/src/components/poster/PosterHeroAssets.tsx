@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { slowFloat } from "../../lib/motionPresets";
 
@@ -13,6 +13,15 @@ type StripeAssetProps = HeroAssetProps & {
 	drift: number;
 	duration: number;
 	delay?: number;
+	opacityRange?: [number, number, number];
+	beamOpacity?: number;
+	textureCoreOpacity?: number;
+	textureShadowOpacity?: number;
+	textureSoftOpacity?: number;
+	textureCore?: string;
+	textureGlaze?: string;
+	textureShadow?: string;
+	textureSoft?: string;
 	children?: ReactNode;
 };
 
@@ -106,23 +115,45 @@ function PosterStripeAsset({
 	delay = 0,
 	drift,
 	duration,
+	opacityRange = [0.72, 0.84, 0.72],
+	beamOpacity = 0.18,
 	reducedMotion,
+	textureCoreOpacity = 0.16,
+	textureCore = "rgba(255, 247, 236, 0.18)",
+	textureShadowOpacity = 0.12,
+	textureGlaze = "rgba(255, 251, 242, 0.26)",
+	textureShadow = "rgba(63, 46, 50, 0.22)",
+	textureSoftOpacity = 0.22,
+	textureSoft = "rgba(252, 243, 224, 0.18)",
 }: StripeAssetProps) {
+	const stripeStyle = {
+		"--poster-stripe-beam-opacity": beamOpacity,
+		"--poster-stripe-core": textureCore,
+		"--poster-stripe-core-opacity": textureCoreOpacity,
+		"--poster-stripe-glaze": textureGlaze,
+		"--poster-stripe-shadow": textureShadow,
+		"--poster-stripe-shadow-opacity": textureShadowOpacity,
+		"--poster-stripe-soft": textureSoft,
+		"--poster-stripe-soft-opacity": textureSoftOpacity,
+	} as CSSProperties;
+
 	return (
 		<motion.div
 			className={`poster-asset ${className}`}
 			data-asset-id={assetId}
+			style={stripeStyle}
 			initial={false}
 			animate={
 				reducedMotion
 					? undefined
 					: {
 							x: [0, drift, 0],
-							opacity: [0.82, 1, 0.82],
+							opacity: opacityRange,
 						}
 			}
 			transition={slowFloat(duration, delay)}
 		>
+			<PosterStripeTexture />
 			{children}
 		</motion.div>
 	);
@@ -227,6 +258,160 @@ function PosterPlanetAccentAsset({
 		>
 			{children}
 		</motion.div>
+	);
+}
+
+type StrokePlanetPalette = {
+	highlight: string;
+	rim: string;
+	shell: string;
+	shadow: string;
+	stripe: string;
+};
+
+type StrokePlanetPaletteKey =
+	| "amber"
+	| "deepTeal"
+	| "green"
+	| "orange"
+	| "plum"
+	| "red";
+
+type StrokePlanetProps = HeroAssetProps & {
+	assetId: string;
+	offset?: string;
+	palette: StrokePlanetPaletteKey;
+	side: "end" | "start";
+	size: string;
+};
+
+const STROKE_PLANET_PALETTES: Record<
+	StrokePlanetPaletteKey,
+	StrokePlanetPalette
+> = {
+	amber: {
+		highlight: "rgba(252, 239, 211, 0.2)",
+		rim: "rgba(250, 238, 214, 0.14)",
+		shell: "#f1b34f",
+		shadow: "rgba(157, 101, 52, 0.32)",
+		stripe: "rgba(246, 207, 113, 0.28)",
+	},
+	deepTeal: {
+		highlight: "rgba(242, 253, 255, 0.18)",
+		rim: "rgba(242, 253, 255, 0.14)",
+		shell: "#238ea0",
+		shadow: "rgba(23, 88, 104, 0.34)",
+		stripe: "rgba(222, 248, 251, 0.16)",
+	},
+	green: {
+		highlight: "rgba(248, 251, 235, 0.18)",
+		rim: "rgba(248, 251, 235, 0.14)",
+		shell: "#a9c857",
+		shadow: "rgba(91, 106, 47, 0.3)",
+		stripe: "rgba(243, 250, 226, 0.18)",
+	},
+	orange: {
+		highlight: "rgba(252, 242, 220, 0.18)",
+		rim: "rgba(252, 242, 220, 0.14)",
+		shell: "#eb6840",
+		shadow: "rgba(149, 60, 51, 0.32)",
+		stripe: "rgba(248, 194, 92, 0.28)",
+	},
+	plum: {
+		highlight: "rgba(250, 231, 218, 0.16)",
+		rim: "rgba(250, 231, 218, 0.12)",
+		shell: "#7b2f69",
+		shadow: "rgba(95, 37, 82, 0.34)",
+		stripe: "rgba(160, 80, 136, 0.28)",
+	},
+	red: {
+		highlight: "rgba(252, 235, 226, 0.16)",
+		rim: "rgba(252, 235, 226, 0.12)",
+		shell: "#ef4e53",
+		shadow: "rgba(149, 40, 56, 0.3)",
+		stripe: "rgba(253, 220, 211, 0.16)",
+	},
+};
+
+function PosterStripeTexture() {
+	return (
+		<>
+			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--soft" />
+			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--core" />
+			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--shadow" />
+		</>
+	);
+}
+
+function PosterStrokePlanet({
+	assetId,
+	offset = "0%",
+	palette,
+	reducedMotion,
+	side,
+	size,
+}: StrokePlanetProps) {
+	const colors = STROKE_PLANET_PALETTES[palette];
+	const clipId = `${assetId}-${side}-planet-clip`;
+	const planetStyle = {
+		height: size,
+		[side]: offset,
+		width: size,
+	} as CSSProperties;
+
+	return (
+		<span
+			className={`poster-asset-stroke-planet poster-asset-stroke-planet--${side}`}
+			style={planetStyle}
+		>
+			<svg viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+				<defs>
+					<clipPath id={clipId}>
+						<circle cx="50" cy="50" r="45" />
+					</clipPath>
+				</defs>
+				<circle cx="50" cy="50" r="50" fill={colors.shadow} opacity="0.38" />
+				<circle cx="50" cy="50" r="45" fill={colors.shell} opacity="0.96" />
+				<motion.g
+					clipPath={`url(#${clipId})`}
+					initial={false}
+					animate={
+						reducedMotion
+							? undefined
+							: {
+									x: [0, 8, 0],
+									opacity: [0.78, 1, 0.78],
+								}
+					}
+					transition={slowFloat(7.5, 0.12)}
+				>
+					{[
+						{ y: 22, height: 8, fill: colors.stripe },
+						{ y: 36, height: 7, fill: colors.highlight },
+						{ y: 49, height: 9, fill: colors.stripe },
+						{ y: 64, height: 7, fill: colors.highlight },
+					].map((band) => (
+						<rect
+							key={`${assetId}-${side}-${band.y}`}
+							x="8"
+							y={band.y}
+							width="84"
+							height={band.height}
+							rx={band.height / 2}
+							fill={band.fill}
+						/>
+					))}
+				</motion.g>
+				<circle
+					cx="50"
+					cy="50"
+					r="45"
+					fill="none"
+					stroke={colors.rim}
+					strokeWidth="3"
+				/>
+			</svg>
+		</span>
 	);
 }
 
@@ -1286,10 +1471,19 @@ export function PosterTopTealStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="top-teal-stripe"
+			beamOpacity={0.12}
 			className="poster-asset--top-teal-stripe"
 			drift={-20}
 			duration={15}
+			opacityRange={[0.74, 0.84, 0.74]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.12}
+			textureCore="rgba(93, 225, 234, 0.18)"
+			textureGlaze="rgba(241, 253, 255, 0.28)"
+			textureShadowOpacity={0.08}
+			textureShadow="rgba(17, 108, 123, 0.28)"
+			textureSoftOpacity={0.14}
+			textureSoft="rgba(203, 244, 248, 0.14)"
 		>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
@@ -1300,12 +1494,29 @@ export function PosterTopMutedStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="top-muted-stripe"
+			beamOpacity={0.1}
 			className="poster-asset--top-muted-stripe"
 			drift={24}
 			duration={18}
 			delay={0.2}
+			opacityRange={[0.58, 0.68, 0.58]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.12}
+			textureCore="rgba(208, 224, 219, 0.18)"
+			textureGlaze="rgba(249, 247, 238, 0.2)"
+			textureShadowOpacity={0.1}
+			textureShadow="rgba(96, 112, 108, 0.18)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(247, 241, 228, 0.16)"
 		>
+			<PosterStrokePlanet
+				assetId="top-muted-stripe"
+				offset="0.2%"
+				palette="orange"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="2.2%"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1315,12 +1526,31 @@ export function PosterTopRedStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="top-red-stripe"
+			beamOpacity={0.12}
 			className="poster-asset--top-red-stripe"
 			drift={-26}
 			duration={14}
 			delay={0.4}
+			opacityRange={[0.76, 0.84, 0.76]}
 			reducedMotion={reducedMotion}
-		/>
+			textureCoreOpacity={0.14}
+			textureCore="rgba(255, 219, 208, 0.14)"
+			textureGlaze="rgba(255, 244, 236, 0.18)"
+			textureShadowOpacity={0.12}
+			textureShadow="rgba(121, 37, 49, 0.24)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(248, 188, 176, 0.16)"
+		>
+			<PosterStrokePlanet
+				assetId="top-red-stripe"
+				offset="0.16%"
+				palette="plum"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="4.4%"
+			/>
+			<span className="poster-asset-stripe__beam" />
+		</PosterStripeAsset>
 	);
 }
 
@@ -1328,12 +1558,29 @@ export function PosterMiddleOrangeStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="middle-orange-stripe"
+			beamOpacity={0.12}
 			className="poster-asset--middle-orange-stripe"
 			drift={28}
 			duration={16}
 			delay={0.8}
+			opacityRange={[0.68, 0.78, 0.68]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.16}
+			textureCore="rgba(255, 214, 128, 0.18)"
+			textureGlaze="rgba(255, 248, 233, 0.22)"
+			textureShadowOpacity={0.12}
+			textureShadow="rgba(147, 85, 52, 0.22)"
+			textureSoftOpacity={0.18}
+			textureSoft="rgba(250, 206, 120, 0.14)"
 		>
+			<PosterStrokePlanet
+				assetId="middle-orange-stripe"
+				offset="0.18%"
+				palette="deepTeal"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="2.1%"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1343,33 +1590,75 @@ export function PosterCenterTealStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="center-teal-stripe"
+			beamOpacity={0.1}
 			className="poster-asset--center-teal-stripe"
 			drift={-18}
 			duration={20}
 			delay={0.5}
+			opacityRange={[0.7, 0.8, 0.7]}
 			reducedMotion={reducedMotion}
-		/>
+			textureCoreOpacity={0.14}
+			textureCore="rgba(166, 238, 243, 0.16)"
+			textureGlaze="rgba(245, 253, 254, 0.22)"
+			textureShadowOpacity={0.1}
+			textureShadow="rgba(14, 102, 117, 0.24)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(206, 247, 249, 0.14)"
+		>
+			<span className="poster-asset-stripe__beam" />
+		</PosterStripeAsset>
 	);
 }
 
 export function PosterMidRouteStripe({ reducedMotion }: HeroAssetProps) {
+	const routeStripeStyle = {
+		"--poster-route-base-opacity": 0.86,
+		"--poster-route-beam-opacity": 0.2,
+		"--poster-route-glow-opacity": 0.42,
+		"--poster-stripe-core": "rgba(255, 218, 129, 0.18)",
+		"--poster-stripe-core-opacity": 0.16,
+		"--poster-stripe-glaze": "rgba(255, 248, 236, 0.24)",
+		"--poster-stripe-shadow": "rgba(97, 57, 47, 0.26)",
+		"--poster-stripe-shadow-opacity": 0.14,
+		"--poster-stripe-soft": "rgba(248, 201, 119, 0.14)",
+		"--poster-stripe-soft-opacity": 0.18,
+	} as CSSProperties;
+
 	return (
 		<motion.div
 			className="poster-asset poster-asset--mid-route"
+			style={routeStripeStyle}
 			initial={false}
 			animate={
 				reducedMotion
 					? undefined
 					: {
 							x: [0, 30, 0],
-							opacity: [0.84, 1, 0.84],
+							opacity: [0.72, 0.84, 0.72],
 						}
 			}
 			transition={slowFloat(13, 0.1)}
 		>
+			<PosterStripeTexture />
+			<PosterStrokePlanet
+				assetId="mid-route-stripe"
+				offset="0.12%"
+				palette="orange"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="2.2%"
+			/>
 			<span className="poster-asset-mid-route__glow" />
 			<span className="poster-asset-mid-route__base" />
 			<span className="poster-asset-mid-route__beam" />
+			<PosterStrokePlanet
+				assetId="mid-route-stripe"
+				offset="0.22%"
+				palette="deepTeal"
+				reducedMotion={reducedMotion}
+				side="end"
+				size="2.7%"
+			/>
 			<span className="poster-asset-mid-route__marker poster-asset-mid-route__marker--start" />
 			<span className="poster-asset-mid-route__marker poster-asset-mid-route__marker--mid" />
 			<span className="poster-asset-mid-route__marker poster-asset-mid-route__marker--end" />
@@ -1381,12 +1670,29 @@ export function PosterMidGreenStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="mid-green-stripe"
+			beamOpacity={0.1}
 			className="poster-asset--mid-green-stripe"
 			drift={-22}
 			duration={17}
 			delay={0.3}
+			opacityRange={[0.68, 0.78, 0.68]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.14}
+			textureCore="rgba(226, 245, 168, 0.18)"
+			textureGlaze="rgba(249, 252, 233, 0.22)"
+			textureShadowOpacity={0.12}
+			textureShadow="rgba(78, 96, 38, 0.24)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(214, 238, 147, 0.14)"
 		>
+			<PosterStrokePlanet
+				assetId="mid-green-stripe"
+				offset="0.16%"
+				palette="green"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="4.2%"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1396,12 +1702,29 @@ export function PosterBottomOrangeStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="bottom-orange-stripe"
+			beamOpacity={0.14}
 			className="poster-asset--bottom-orange-stripe"
 			drift={18}
 			duration={19}
 			delay={0.7}
+			opacityRange={[0.8, 0.88, 0.8]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.18}
+			textureCore="rgba(255, 221, 145, 0.18)"
+			textureGlaze="rgba(255, 248, 233, 0.22)"
+			textureShadowOpacity={0.14}
+			textureShadow="rgba(114, 71, 50, 0.24)"
+			textureSoftOpacity={0.18}
+			textureSoft="rgba(246, 188, 88, 0.16)"
 		>
+			<PosterStrokePlanet
+				assetId="bottom-orange-stripe"
+				offset="0.12%"
+				palette="plum"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="4.1%"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1411,12 +1734,29 @@ export function PosterFooterLaneStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="footer-lane-stripe"
+			beamOpacity={0.1}
 			className="poster-asset--footer-lane-stripe"
 			drift={-20}
 			duration={21}
 			delay={0.9}
+			opacityRange={[0.66, 0.74, 0.66]}
 			reducedMotion={reducedMotion}
+			textureCoreOpacity={0.14}
+			textureCore="rgba(228, 244, 173, 0.18)"
+			textureGlaze="rgba(247, 251, 228, 0.24)"
+			textureShadowOpacity={0.12}
+			textureShadow="rgba(70, 86, 35, 0.24)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(203, 229, 136, 0.14)"
 		>
+			<PosterStrokePlanet
+				assetId="footer-lane-stripe"
+				offset="0.18%"
+				palette="plum"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="1.9%"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1426,12 +1766,31 @@ export function PosterFooterRedStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="footer-red-stripe"
+			beamOpacity={0.1}
 			className="poster-asset--footer-red-stripe"
 			drift={28}
 			duration={14}
 			delay={0.2}
+			opacityRange={[0.72, 0.82, 0.72]}
 			reducedMotion={reducedMotion}
-		/>
+			textureCoreOpacity={0.14}
+			textureCore="rgba(255, 222, 214, 0.16)"
+			textureGlaze="rgba(255, 246, 241, 0.2)"
+			textureShadowOpacity={0.12}
+			textureShadow="rgba(112, 33, 46, 0.24)"
+			textureSoftOpacity={0.16}
+			textureSoft="rgba(248, 175, 165, 0.14)"
+		>
+			<span className="poster-asset-stripe__beam" />
+			<PosterStrokePlanet
+				assetId="footer-red-stripe"
+				offset="0.28%"
+				palette="green"
+				reducedMotion={reducedMotion}
+				side="end"
+				size="2.4%"
+			/>
+		</PosterStripeAsset>
 	);
 }
 

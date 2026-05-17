@@ -1,11 +1,12 @@
 import {
 	motion,
+	useInView,
 	useMotionValue,
 	useReducedMotion,
 	useSpring,
 	useTransform,
 } from "motion/react";
-import type { PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 
 import { buildPhases, platformHighlights } from "../../lib/posterScene";
 import {
@@ -15,10 +16,29 @@ import {
 } from "../../lib/motionPresets";
 import { PosterScene } from "./PosterScene";
 
+type IdleWindow = Window & {
+	requestIdleCallback?: (
+		callback: IdleRequestCallback,
+		options?: IdleRequestOptions,
+	) => number;
+	cancelIdleCallback?: (handle: number) => void;
+};
+
 export default function PosterExperience() {
 	const reducedMotion = Boolean(useReducedMotion());
+	const [enableEnhancement, setEnableEnhancement] = useState(false);
+	const [pointerEngaged, setPointerEngaged] = useState(false);
+	const stageRef = useRef<HTMLDivElement>(null);
+	const pointerIdleTimerRef = useRef<number | null>(null);
 	const pointerX = useMotionValue(0);
 	const pointerY = useMotionValue(0);
+	const stageInView = useInView(stageRef, {
+		amount: 0.24,
+	});
+	const stageSeen = useInView(stageRef, {
+		amount: 0.34,
+		once: true,
+	});
 	const parallaxX = useSpring(
 		useTransform(pointerX, [-0.5, 0.5], [-18, 18]),
 		pointerSpring,
@@ -43,12 +63,77 @@ export default function PosterExperience() {
 
 		pointerX.set(nextX);
 		pointerY.set(nextY);
+		setPointerEngaged(true);
+
+		if (pointerIdleTimerRef.current !== null) {
+			window.clearTimeout(pointerIdleTimerRef.current);
+		}
+
+		pointerIdleTimerRef.current = window.setTimeout(() => {
+			setPointerEngaged(false);
+			pointerIdleTimerRef.current = null;
+		}, 260);
 	};
 
 	const resetPointer = () => {
 		pointerX.set(0);
 		pointerY.set(0);
+		setPointerEngaged(false);
+
+		if (pointerIdleTimerRef.current !== null) {
+			window.clearTimeout(pointerIdleTimerRef.current);
+			pointerIdleTimerRef.current = null;
+		}
 	};
+
+	useEffect(() => {
+		if (!stageSeen || reducedMotion) {
+			return;
+		}
+
+		const idleWindow = window as IdleWindow;
+		let enhancementTimer: number | undefined;
+		let idleHandle: number | undefined;
+		let cancelled = false;
+
+		const warmEnhancementLayer = () => {
+			void import("./PosterThreeLayer").then(() => {
+				if (cancelled) {
+					return;
+				}
+
+				enhancementTimer = window.setTimeout(() => {
+					setEnableEnhancement(true);
+				}, 120);
+			});
+		};
+
+		if (idleWindow.requestIdleCallback) {
+			idleHandle = idleWindow.requestIdleCallback(warmEnhancementLayer, {
+				timeout: 320,
+			});
+		} else {
+			warmEnhancementLayer();
+		}
+
+		return () => {
+			cancelled = true;
+			if (typeof enhancementTimer === "number") {
+				window.clearTimeout(enhancementTimer);
+			}
+			if (typeof idleHandle === "number" && idleWindow.cancelIdleCallback) {
+				idleWindow.cancelIdleCallback(idleHandle);
+			}
+		};
+	}, [reducedMotion, stageSeen]);
+
+	useEffect(() => {
+		return () => {
+			if (pointerIdleTimerRef.current !== null) {
+				window.clearTimeout(pointerIdleTimerRef.current);
+			}
+		};
+	}, []);
 
 	return (
 		<section className="experience-shell">
@@ -99,6 +184,7 @@ export default function PosterExperience() {
 
 				<motion.div
 					className="experience-stage"
+					ref={stageRef}
 					onPointerMove={handlePointerMove}
 					onPointerLeave={resetPointer}
 					initial={{ opacity: 0, scale: 0.985 }}
@@ -115,8 +201,12 @@ export default function PosterExperience() {
 					/>
 
 					<PosterScene
+						enableEnhancement={enableEnhancement && stageInView}
 						parallaxX={parallaxX}
 						parallaxY={parallaxY}
+						pointerEngaged={pointerEngaged}
+						pointerX={pointerX}
+						pointerY={pointerY}
 						reducedMotion={reducedMotion}
 					/>
 				</motion.div>

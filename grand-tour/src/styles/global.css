@@ -89,6 +89,125 @@ a {
 	opacity: 0.94;
 }
 
+.poster-asset-stripe__texture,
+.poster-asset-stroke-planet {
+	pointer-events: none;
+	position: absolute;
+}
+
+.poster-three-layer {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	overflow: hidden;
+	pointer-events: none;
+	contain: paint;
+	z-index: 2;
+	opacity: 0.82;
+	mix-blend-mode: screen;
+}
+
+.poster-three-layer--medium {
+	opacity: 0.74;
+}
+
+.poster-three-layer--low {
+	opacity: 0.62;
+}
+
+.poster-three-layer__canvas,
+.poster-three-layer canvas {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+}
+
+.poster-asset-stripe__texture {
+	inset: 0;
+	border-radius: inherit;
+	mix-blend-mode: multiply;
+	will-change: opacity;
+}
+
+.poster-asset-stripe__texture--soft {
+	inset: 10% 0 52% 0;
+	background:
+		linear-gradient(
+			90deg,
+			transparent 0%,
+			var(--poster-stripe-soft) 10%,
+			var(--poster-stripe-soft) 90%,
+			transparent 100%
+		);
+	opacity: var(--poster-stripe-soft-opacity, 0.22);
+}
+
+.poster-asset-stripe__texture--core {
+	inset: 34% 0 26% 0;
+	background:
+		linear-gradient(
+			90deg,
+			transparent 0%,
+			var(--poster-stripe-core) 8%,
+			var(--poster-stripe-glaze) 50%,
+			var(--poster-stripe-core) 92%,
+			transparent 100%
+		);
+	opacity: var(--poster-stripe-core-opacity, 0.16);
+}
+
+.poster-asset-stripe__texture--shadow {
+	inset: 60% 0 8% 0;
+	background:
+		linear-gradient(
+			90deg,
+			transparent 0%,
+			var(--poster-stripe-shadow) 14%,
+			var(--poster-stripe-shadow) 86%,
+			transparent 100%
+		);
+	opacity: var(--poster-stripe-shadow-opacity, 0.12);
+}
+
+.poster-asset-stripe__beam {
+	opacity: var(--poster-stripe-beam-opacity, 0.18);
+}
+
+.poster-asset-mid-route__glow {
+	opacity: var(--poster-route-glow-opacity, 0.42);
+}
+
+.poster-asset-mid-route__base {
+	opacity: var(--poster-route-base-opacity, 0.86);
+}
+
+.poster-asset-mid-route__beam {
+	opacity: var(--poster-route-beam-opacity, 0.2);
+}
+
+.poster-asset-stroke-planet {
+	display: block;
+	filter: drop-shadow(0 0.12rem 0.16rem rgba(12, 28, 44, 0.08));
+	mix-blend-mode: multiply;
+	top: 50%;
+	transform-origin: center;
+	z-index: 4;
+}
+
+.poster-asset-stroke-planet--start {
+	transform: translate(-50%, -50%);
+}
+
+.poster-asset-stroke-planet--end {
+	transform: translate(50%, -50%);
+}
+
+.poster-asset-stroke-planet svg {
+	height: 100%;
+	overflow: visible;
+	width: 100%;
+}
+
 /* Poster fidelity overrides: keep the recovered base CSS stable, then refine
    authored asset alignment here to better match the original print composition. */
 

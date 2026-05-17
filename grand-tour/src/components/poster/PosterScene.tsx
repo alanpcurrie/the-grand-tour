@@ -1,5 +1,5 @@
 import { motion, type MotionValue } from "motion/react";
-import { useState } from "react";
+import { Suspense, lazy, useState } from "react";
 
 import { posterHotspots, type PosterHotspotId } from "../../lib/posterHotspots";
 
@@ -30,15 +30,29 @@ import { PosterFleetMotion } from "./PosterFleetMotion";
 import { PosterInteractiveHotspots } from "./PosterInteractiveHotspots";
 import { PosterTitleLockup } from "./PosterTitleLockup";
 
+const PosterThreeLayer = lazy(() =>
+	import("./PosterThreeLayer").then((module) => ({
+		default: module.PosterThreeLayer,
+	})),
+);
+
 type PosterSceneProps = {
+	enableEnhancement: boolean;
 	parallaxX: MotionValue<number>;
 	parallaxY: MotionValue<number>;
+	pointerEngaged: boolean;
+	pointerX: MotionValue<number>;
+	pointerY: MotionValue<number>;
 	reducedMotion: boolean;
 };
 
 export function PosterScene({
+	enableEnhancement,
 	parallaxX,
 	parallaxY,
+	pointerEngaged,
+	pointerX,
+	pointerY,
 	reducedMotion,
 }: PosterSceneProps) {
 	const [previewHotspotId, setPreviewHotspotId] =
@@ -81,6 +95,19 @@ export function PosterScene({
 				style={reducedMotion ? undefined : { x: parallaxX, y: parallaxY }}
 			>
 				<PosterPaperField />
+				{enableEnhancement ? (
+					<Suspense fallback={null}>
+						<PosterThreeLayer
+							activeHotspotId={activeHotspotId}
+							activeRouteIds={activeRouteIds}
+							activeShipId={activeShipId}
+							pointerEngaged={pointerEngaged}
+							pointerX={pointerX}
+							pointerY={pointerY}
+							reducedMotion={reducedMotion}
+						/>
+					</Suspense>
+				) : null}
 				<div className="poster-phase-chip">
 					Phase 01 — living poster scaffold
 				</div>
