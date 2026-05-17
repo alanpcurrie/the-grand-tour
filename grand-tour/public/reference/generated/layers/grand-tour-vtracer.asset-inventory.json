@@ -1,0 +1,1401 @@
+{
+  "generatedAt": "2026-05-17T16:19:15.029Z",
+  "input": {
+    "layerManifestPath": "/Users/alan/Projects/the-grand-tour-master/grand-tour/public/reference/generated/layers/grand-tour-vtracer.layer-manifest.json",
+    "layerManifestRelativePath": "public/reference/generated/layers/grand-tour-vtracer.layer-manifest.json"
+  },
+  "splitContext": {
+    "residualReducer": {
+      "enabled": true,
+      "primaryResidualCount": 140,
+      "reassignedCount": 77,
+      "remainingResidualCount": 63,
+      "countsByLayer": {
+        "fleet": 40,
+        "footer": 13,
+        "stripes": 11,
+        "micro": 7,
+        "orbits": 3,
+        "planets": 3
+      },
+      "countsByRule": {
+        "residual-fleet-fragment": 37,
+        "residual-footer-spillover": 13,
+        "residual-horizontal-band": 11,
+        "residual-micro-cleanup": 7,
+        "residual-orbit-arc": 3,
+        "residual-planet-body": 3,
+        "residual-fleet-hull": 3
+      }
+    },
+    "spatialReducer": {
+      "enabled": true,
+      "inputResidualCount": 63,
+      "reassignedCount": 63,
+      "remainingResidualCount": 0,
+      "thresholds": {
+        "maxGapRatio": 0.0005,
+        "minContainmentRatio": 0.95,
+        "minOverlapRatio": 0.95
+      },
+      "countsByLayer": {
+        "planets": 30,
+        "fleet": 13,
+        "stripes": 10,
+        "orbits": 10
+      },
+      "countsByRule": {
+        "spatial-bbox-alignment": 63
+      }
+    },
+    "layerFiles": [
+      {
+        "id": "background",
+        "file": "grand-tour-vtracer.background.svg",
+        "count": 32,
+        "approxCoverage": 2.3233
+      },
+      {
+        "id": "orbits",
+        "file": "grand-tour-vtracer.orbits.svg",
+        "count": 15,
+        "approxCoverage": 0.5784
+      },
+      {
+        "id": "planets",
+        "file": "grand-tour-vtracer.planets.svg",
+        "count": 54,
+        "approxCoverage": 1.9064
+      },
+      {
+        "id": "stripes",
+        "file": "grand-tour-vtracer.stripes.svg",
+        "count": 59,
+        "approxCoverage": 0.6318
+      },
+      {
+        "id": "fleet",
+        "file": "grand-tour-vtracer.fleet.svg",
+        "count": 119,
+        "approxCoverage": 0.2248
+      },
+      {
+        "id": "footer",
+        "file": "grand-tour-vtracer.footer.svg",
+        "count": 203,
+        "approxCoverage": 0.0693
+      },
+      {
+        "id": "micro",
+        "file": "grand-tour-vtracer.micro.svg",
+        "count": 43,
+        "approxCoverage": 0.0028
+      },
+      {
+        "id": "residual",
+        "file": null,
+        "count": 0,
+        "approxCoverage": 0
+      }
+    ]
+  },
+  "summary": {
+    "assetCount": 33,
+    "heroAssetCount": 7,
+    "implementedAssetCount": 33,
+    "countsByAction": {
+      "procedural-svg": 17,
+      "procedural-html-css": 7,
+      "redraw-svg": 4,
+      "clean-from-trace": 3,
+      "hybrid-trace-to-svg": 2
+    },
+    "countsByGroup": {
+      "celestial": 10,
+      "stripes": 10,
+      "type": 7,
+      "fleet": 4,
+      "foundation": 2
+    },
+    "countsByImplementation": {
+      "implemented": 33
+    },
+    "countsByActivationPhase": {
+      "ambient-motion": 19,
+      "static-poster": 6,
+      "interactive-depth": 6,
+      "scroll-story": 2
+    },
+    "countsByPriority": {
+      "medium": 14,
+      "high": 11,
+      "hero": 7,
+      "low": 1
+    },
+    "sourceLayerUsage": {
+      "stripes": 12,
+      "footer": 10,
+      "planets": 8,
+      "micro": 4,
+      "orbits": 4,
+      "fleet": 4,
+      "background": 3
+    }
+  },
+  "heroBuildOrder": [
+    {
+      "step": 1,
+      "id": "paper-field",
+      "label": "Paper field",
+      "implemented": true,
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "css-background",
+      "groupId": "foundation",
+      "activationPhase": "static-poster",
+      "sourceLayerSummary": "background (32)"
+    },
+    {
+      "step": 2,
+      "id": "red-sun-core",
+      "label": "Red sun core",
+      "implemented": true,
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-component",
+      "groupId": "celestial",
+      "activationPhase": "ambient-motion",
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "step": 3,
+      "id": "main-green-body",
+      "label": "Main green planetary body",
+      "implemented": true,
+      "recommendedAction": "hybrid-trace-to-svg",
+      "finalFormat": "svg-component",
+      "groupId": "celestial",
+      "activationPhase": "interactive-depth",
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "step": 4,
+      "id": "violet-right-mass",
+      "label": "Violet right mass",
+      "implemented": true,
+      "recommendedAction": "hybrid-trace-to-svg",
+      "finalFormat": "svg-component",
+      "groupId": "celestial",
+      "activationPhase": "interactive-depth",
+      "sourceLayerSummary": "planets (54), orbits (15)"
+    },
+    {
+      "step": 5,
+      "id": "mid-route-stripe",
+      "label": "Mid route stripe",
+      "implemented": true,
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "groupId": "stripes",
+      "activationPhase": "scroll-story",
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "step": 6,
+      "id": "fleet-alpha-arrow",
+      "label": "Fleet Alpha arrow ship",
+      "implemented": true,
+      "recommendedAction": "redraw-svg",
+      "finalFormat": "react-component",
+      "groupId": "fleet",
+      "activationPhase": "ambient-motion",
+      "sourceLayerSummary": "fleet (119)"
+    },
+    {
+      "step": 7,
+      "id": "title-lockup",
+      "label": "Title lockup",
+      "implemented": true,
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "groupId": "type",
+      "activationPhase": "static-poster",
+      "sourceLayerSummary": "footer (203)"
+    }
+  ],
+  "assets": [
+    {
+      "id": "paper-field",
+      "label": "Paper field",
+      "groupId": "foundation",
+      "compositionRole": "Main poster substrate and off-white field behind every other layer.",
+      "sourceLayerIds": [
+        "background"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "css-background",
+      "cleanupPriority": "hero",
+      "depthTier": "background",
+      "activationPhase": "static-poster",
+      "interactivity": "none",
+      "notes": "Use traced background only as color reference; final implementation should be a CSS background with optional scanned paper noise.",
+      "groupLabel": "Foundation & paper",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "background",
+          "available": true,
+          "file": "grand-tour-vtracer.background.svg",
+          "count": 32,
+          "approxCoverage": 2.3233
+        }
+      ],
+      "totalSourceCount": 32,
+      "sourceLayerSummary": "background (32)"
+    },
+    {
+      "id": "paper-grain-overlay",
+      "label": "Paper grain overlay",
+      "groupId": "foundation",
+      "compositionRole": "Very light print texture pass that keeps the remake feeling tactile.",
+      "sourceLayerIds": [
+        "background",
+        "micro"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "css-background",
+      "cleanupPriority": "medium",
+      "depthTier": "overlay",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Treat this as a controlled overlay, not a traced asset; a tiled noise texture or film-grain shader is the safer path.",
+      "groupLabel": "Foundation & paper",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "background",
+          "available": true,
+          "file": "grand-tour-vtracer.background.svg",
+          "count": 32,
+          "approxCoverage": 2.3233
+        },
+        {
+          "id": "micro",
+          "available": true,
+          "file": "grand-tour-vtracer.micro.svg",
+          "count": 43,
+          "approxCoverage": 0.0028
+        }
+      ],
+      "totalSourceCount": 75,
+      "sourceLayerSummary": "background (32), micro (43)"
+    },
+    {
+      "id": "red-sun-core",
+      "label": "Red sun core",
+      "groupId": "celestial",
+      "compositionRole": "Lower-left hot core that anchors the composition and provides the warm launch energy.",
+      "sourceLayerIds": [
+        "planets"
+      ],
+      "sceneRefs": [
+        "red-sun-core"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "hero",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Rebuild as a radial gradient and masked circle stack; the traced silhouette is reference, not final geometry.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        }
+      ],
+      "totalSourceCount": 54,
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "id": "main-green-body",
+      "label": "Main green planetary body",
+      "groupId": "celestial",
+      "compositionRole": "Dominant green planet mass that holds the center of the poster.",
+      "sourceLayerIds": [
+        "planets"
+      ],
+      "sceneRefs": [
+        "main-green"
+      ],
+      "recommendedAction": "hybrid-trace-to-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "hero",
+      "depthTier": "midground",
+      "activationPhase": "interactive-depth",
+      "interactivity": "hotspot",
+      "notes": "Use the traced layer for silhouette guidance, but hand-author the final gradient stops and edge cleanup.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        }
+      ],
+      "totalSourceCount": 54,
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "id": "turquoise-lens",
+      "label": "Turquoise lens overlay",
+      "groupId": "celestial",
+      "compositionRole": "Cooling lens flare layer that adds translucency across the main planet cluster.",
+      "sourceLayerIds": [
+        "planets"
+      ],
+      "sceneRefs": [
+        "turquoise-lens"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Best rebuilt as translucent circles and blur-safe masks so motion stays smooth and predictable.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        }
+      ],
+      "totalSourceCount": 54,
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "id": "yellow-sweep",
+      "label": "Yellow sweep",
+      "groupId": "celestial",
+      "compositionRole": "Warm lower sweep that helps transition from the planetary cluster into the footer bands.",
+      "sourceLayerIds": [
+        "planets",
+        "stripes"
+      ],
+      "sceneRefs": [
+        "yellow-sweep"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "high",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Prefer a controlled radial gradient shape instead of keeping the traced feathered edges.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        },
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 113,
+      "sourceLayerSummary": "planets (54), stripes (59)"
+    },
+    {
+      "id": "violet-right-mass",
+      "label": "Violet right mass",
+      "groupId": "celestial",
+      "compositionRole": "Large purple body on the right edge that gives the poster its asymmetrical depth.",
+      "sourceLayerIds": [
+        "planets",
+        "orbits"
+      ],
+      "sceneRefs": [
+        "violet-right"
+      ],
+      "recommendedAction": "hybrid-trace-to-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "hero",
+      "depthTier": "foreground",
+      "activationPhase": "interactive-depth",
+      "interactivity": "hotspot",
+      "notes": "Keep the traced silhouette only as layout guidance, then author a cleaner right-side gradient shell.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        },
+        {
+          "id": "orbits",
+          "available": true,
+          "file": "grand-tour-vtracer.orbits.svg",
+          "count": 15,
+          "approxCoverage": 0.5784
+        }
+      ],
+      "totalSourceCount": 69,
+      "sourceLayerSummary": "planets (54), orbits (15)"
+    },
+    {
+      "id": "magenta-token",
+      "label": "Magenta token",
+      "groupId": "celestial",
+      "compositionRole": "Small lower-center planet/token accent that acts like a waypoint in the composition.",
+      "sourceLayerIds": [
+        "planets"
+      ],
+      "sceneRefs": [
+        "magenta-token"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-component",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "interactive-depth",
+      "interactivity": "hotspot",
+      "notes": "Keep this crisp and simple so it can support hover or focus behavior later without artifacting.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        }
+      ],
+      "totalSourceCount": 54,
+      "sourceLayerSummary": "planets (54)"
+    },
+    {
+      "id": "teal-dot",
+      "label": "Teal waypoint dot",
+      "groupId": "celestial",
+      "compositionRole": "Tiny accent dot near the lower left that helps the poster feel plotted rather than random.",
+      "sourceLayerIds": [
+        "planets",
+        "micro"
+      ],
+      "sceneRefs": [
+        "teal-dot"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "low",
+      "depthTier": "foreground",
+      "activationPhase": "interactive-depth",
+      "interactivity": "hover",
+      "notes": "This can be rebuilt as a tiny authored circle; no reason to preserve traced noise here.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        },
+        {
+          "id": "micro",
+          "available": true,
+          "file": "grand-tour-vtracer.micro.svg",
+          "count": 43,
+          "approxCoverage": 0.0028
+        }
+      ],
+      "totalSourceCount": 97,
+      "sourceLayerSummary": "planets (54), micro (43)"
+    },
+    {
+      "id": "outer-right-orbit-arc",
+      "label": "Outer right orbit arc",
+      "groupId": "celestial",
+      "compositionRole": "Tall right-hand orbit silhouette that frames the purple mass and the route story.",
+      "sourceLayerIds": [
+        "orbits"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "clean-from-trace",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "This is one of the few traced assets worth cleaning directly because the orbital contour is already readable.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "orbits",
+          "available": true,
+          "file": "grand-tour-vtracer.orbits.svg",
+          "count": 15,
+          "approxCoverage": 0.5784
+        }
+      ],
+      "totalSourceCount": 15,
+      "sourceLayerSummary": "orbits (15)"
+    },
+    {
+      "id": "mid-violet-orbit-arc",
+      "label": "Mid violet orbit arc",
+      "groupId": "celestial",
+      "compositionRole": "Secondary violet orbit slice that helps carve depth around the middle of the poster.",
+      "sourceLayerIds": [
+        "orbits"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "clean-from-trace",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Smooth the bezier path and simplify anchor count before using this in motion work.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "orbits",
+          "available": true,
+          "file": "grand-tour-vtracer.orbits.svg",
+          "count": 15,
+          "approxCoverage": 0.5784
+        }
+      ],
+      "totalSourceCount": 15,
+      "sourceLayerSummary": "orbits (15)"
+    },
+    {
+      "id": "magenta-route-column",
+      "label": "Magenta route column",
+      "groupId": "celestial",
+      "compositionRole": "Vertical magenta route accent that helps connect the right side into the central cluster.",
+      "sourceLayerIds": [
+        "orbits",
+        "stripes"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "clean-from-trace",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "scroll-story",
+      "interactivity": "focus",
+      "notes": "Keep it authored enough that it can support subtle line-travel animation without wobbling.",
+      "groupLabel": "Celestial bodies & orbits",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "orbits",
+          "available": true,
+          "file": "grand-tour-vtracer.orbits.svg",
+          "count": 15,
+          "approxCoverage": 0.5784
+        },
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 74,
+      "sourceLayerSummary": "orbits (15), stripes (59)"
+    },
+    {
+      "id": "top-teal-stripe",
+      "label": "Top teal stripe",
+      "groupId": "stripes",
+      "compositionRole": "Small upper route accent that kicks off the top travel lanes.",
+      "sourceLayerIds": [
+        "stripes"
+      ],
+      "sceneRefs": [
+        "top-teal"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "A simple rectangle/path with motion-safe transforms is better than traced texture for these bands.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 59,
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "id": "top-muted-stripe",
+      "label": "Top muted stripe",
+      "groupId": "stripes",
+      "compositionRole": "Wide desaturated top lane that stabilizes the header area.",
+      "sourceLayerIds": [
+        "stripes",
+        "background"
+      ],
+      "sceneRefs": [
+        "top-muted"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Rebuild as a clean band with opacity control instead of carrying through paper noise.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        },
+        {
+          "id": "background",
+          "available": true,
+          "file": "grand-tour-vtracer.background.svg",
+          "count": 32,
+          "approxCoverage": 2.3233
+        }
+      ],
+      "totalSourceCount": 91,
+      "sourceLayerSummary": "stripes (59), background (32)"
+    },
+    {
+      "id": "top-red-stripe",
+      "label": "Top red stripe",
+      "groupId": "stripes",
+      "compositionRole": "Warm top band that introduces the route language before the big planetary forms take over.",
+      "sourceLayerIds": [
+        "stripes"
+      ],
+      "sceneRefs": [
+        "top-red"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Keep this crisp; it is a good early candidate for line shimmer and subtle offset motion.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 59,
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "id": "middle-orange-stripe",
+      "label": "Middle orange stripe",
+      "groupId": "stripes",
+      "compositionRole": "Broad orange mid-band that slices through the main planet cluster.",
+      "sourceLayerIds": [
+        "stripes",
+        "planets"
+      ],
+      "sceneRefs": [
+        "middle-orange"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "This is visually important enough that the authored version should be exact and animation-ready.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        },
+        {
+          "id": "planets",
+          "available": true,
+          "file": "grand-tour-vtracer.planets.svg",
+          "count": 54,
+          "approxCoverage": 1.9064
+        }
+      ],
+      "totalSourceCount": 113,
+      "sourceLayerSummary": "stripes (59), planets (54)"
+    },
+    {
+      "id": "center-teal-stripe",
+      "label": "Center teal stripe",
+      "groupId": "stripes",
+      "compositionRole": "Central teal route slice that helps tie the cool lens colors back into the travel lanes.",
+      "sourceLayerIds": [
+        "stripes"
+      ],
+      "sceneRefs": [
+        "center-teal"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "A clean authored stripe will read better than traced pixels once it begins to drift.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 59,
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "id": "mid-route-stripe",
+      "label": "Mid route stripe",
+      "groupId": "stripes",
+      "compositionRole": "Long center route that can later carry travel or scroll-linked motion.",
+      "sourceLayerIds": [
+        "stripes"
+      ],
+      "sceneRefs": [
+        "mid-route"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "hero",
+      "depthTier": "foreground",
+      "activationPhase": "scroll-story",
+      "interactivity": "focus",
+      "notes": "This is a core motion rig candidate, so keep it geometric and easy to animate along its axis.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 59,
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "id": "mid-green-stripe",
+      "label": "Mid green stripe",
+      "groupId": "stripes",
+      "compositionRole": "Green lane supporting the lower half of the main cluster and fleet region.",
+      "sourceLayerIds": [
+        "stripes"
+      ],
+      "sceneRefs": [
+        "mid-green"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Treat as a reusable band component with only width, color, and opacity changing.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        }
+      ],
+      "totalSourceCount": 59,
+      "sourceLayerSummary": "stripes (59)"
+    },
+    {
+      "id": "bottom-orange-stripe",
+      "label": "Bottom orange stripe",
+      "groupId": "stripes",
+      "compositionRole": "Large footer-adjacent orange lane that gives the bottom third its warmth and forward motion.",
+      "sourceLayerIds": [
+        "stripes",
+        "footer"
+      ],
+      "sceneRefs": [
+        "bottom-orange"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "high",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "This should be a single authored band, not a cluster of traced fragments.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        },
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 262,
+      "sourceLayerSummary": "stripes (59), footer (203)"
+    },
+    {
+      "id": "footer-lane-stripe",
+      "label": "Footer lane stripe",
+      "groupId": "stripes",
+      "compositionRole": "Lower green lane used to transition from the artwork into the footer copy.",
+      "sourceLayerIds": [
+        "stripes",
+        "footer"
+      ],
+      "sceneRefs": [
+        "footer-lane"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "This can live in the same reusable stripe system as the other route bands.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        },
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 262,
+      "sourceLayerSummary": "stripes (59), footer (203)"
+    },
+    {
+      "id": "footer-red-stripe",
+      "label": "Footer red stripe",
+      "groupId": "stripes",
+      "compositionRole": "Bottom red travel lane that helps frame the footer lockup.",
+      "sourceLayerIds": [
+        "stripes",
+        "footer"
+      ],
+      "sceneRefs": [
+        "footer-red"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "svg-path",
+      "cleanupPriority": "medium",
+      "depthTier": "midground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "none",
+      "notes": "Keep authored so the bottom third can scale responsively without weird traced artifacts.",
+      "groupLabel": "Routes & horizontal bands",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "stripes",
+          "available": true,
+          "file": "grand-tour-vtracer.stripes.svg",
+          "count": 59,
+          "approxCoverage": 0.6318
+        },
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 262,
+      "sourceLayerSummary": "stripes (59), footer (203)"
+    },
+    {
+      "id": "fleet-alpha-arrow",
+      "label": "Fleet Alpha arrow ship",
+      "groupId": "fleet",
+      "compositionRole": "Primary left-of-center ship silhouette and the first fleet hero asset.",
+      "sourceLayerIds": [
+        "fleet"
+      ],
+      "sceneRefs": [
+        "fleet-alpha"
+      ],
+      "recommendedAction": "redraw-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "hero",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Redraw this fully as authored SVG; traced fleet shapes are reference only and not clean enough for hero use.",
+      "groupLabel": "Fleet silhouettes",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "fleet",
+          "available": true,
+          "file": "grand-tour-vtracer.fleet.svg",
+          "count": 119,
+          "approxCoverage": 0.2248
+        }
+      ],
+      "totalSourceCount": 119,
+      "sourceLayerSummary": "fleet (119)"
+    },
+    {
+      "id": "fleet-beta-dart",
+      "label": "Fleet Beta dart ship",
+      "groupId": "fleet",
+      "compositionRole": "Upper mid-size dart silhouette that helps establish travel direction.",
+      "sourceLayerIds": [
+        "fleet"
+      ],
+      "sceneRefs": [
+        "fleet-beta"
+      ],
+      "recommendedAction": "redraw-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Keep geometry simple enough that tilt and drift feel elegant rather than twitchy.",
+      "groupLabel": "Fleet silhouettes",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "fleet",
+          "available": true,
+          "file": "grand-tour-vtracer.fleet.svg",
+          "count": 119,
+          "approxCoverage": 0.2248
+        }
+      ],
+      "totalSourceCount": 119,
+      "sourceLayerSummary": "fleet (119)"
+    },
+    {
+      "id": "fleet-gamma-shuttle",
+      "label": "Fleet Gamma shuttle ship",
+      "groupId": "fleet",
+      "compositionRole": "Central shuttle variant that gives the fleet a different silhouette family.",
+      "sourceLayerIds": [
+        "fleet"
+      ],
+      "sceneRefs": [
+        "fleet-gamma"
+      ],
+      "recommendedAction": "redraw-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "high",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "Author this separately from the darts so the fleet feels intentionally designed, not duplicated.",
+      "groupLabel": "Fleet silhouettes",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "fleet",
+          "available": true,
+          "file": "grand-tour-vtracer.fleet.svg",
+          "count": 119,
+          "approxCoverage": 0.2248
+        }
+      ],
+      "totalSourceCount": 119,
+      "sourceLayerSummary": "fleet (119)"
+    },
+    {
+      "id": "fleet-delta-dart",
+      "label": "Fleet Delta dart ship",
+      "groupId": "fleet",
+      "compositionRole": "Lower-right dart accent that supports the feeling of movement across the poster.",
+      "sourceLayerIds": [
+        "fleet"
+      ],
+      "sceneRefs": [
+        "fleet-delta"
+      ],
+      "recommendedAction": "redraw-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "medium",
+      "depthTier": "foreground",
+      "activationPhase": "ambient-motion",
+      "interactivity": "hover",
+      "notes": "This can reuse some structural motifs from Fleet Beta, but it should still be an authored component.",
+      "groupLabel": "Fleet silhouettes",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "fleet",
+          "available": true,
+          "file": "grand-tour-vtracer.fleet.svg",
+          "count": 119,
+          "approxCoverage": 0.2248
+        }
+      ],
+      "totalSourceCount": 119,
+      "sourceLayerSummary": "fleet (119)"
+    },
+    {
+      "id": "kicker-copy",
+      "label": "Kicker copy",
+      "groupId": "type",
+      "compositionRole": "Small introductory line above the main title.",
+      "sourceLayerIds": [
+        "footer"
+      ],
+      "sceneRefs": [
+        "posterCopy.kicker"
+      ],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "cleanupPriority": "medium",
+      "depthTier": "overlay",
+      "activationPhase": "static-poster",
+      "interactivity": "none",
+      "notes": "Keep this as semantic HTML text so it stays sharp, accessible, and easy to restyle responsively.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 203,
+      "sourceLayerSummary": "footer (203)"
+    },
+    {
+      "id": "title-lockup",
+      "label": "Title lockup",
+      "groupId": "type",
+      "compositionRole": "Main Grand Tour headline and its typographic staging.",
+      "sourceLayerIds": [
+        "footer"
+      ],
+      "sceneRefs": [
+        "posterCopy.title"
+      ],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "cleanupPriority": "hero",
+      "depthTier": "overlay",
+      "activationPhase": "static-poster",
+      "interactivity": "hover",
+      "notes": "Typography should stay accessible and layout-driven; do not keep it trapped in traced SVG paths.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": true,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 203,
+      "sourceLayerSummary": "footer (203)"
+    },
+    {
+      "id": "itinerary-block",
+      "label": "Itinerary block",
+      "groupId": "type",
+      "compositionRole": "Planet list and travel order callout beneath the title.",
+      "sourceLayerIds": [
+        "footer"
+      ],
+      "sceneRefs": [
+        "posterCopy.itinerary"
+      ],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "cleanupPriority": "high",
+      "depthTier": "overlay",
+      "activationPhase": "static-poster",
+      "interactivity": "none",
+      "notes": "This is better authored as semantic markup so it can evolve into an interactive chapter list later.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 203,
+      "sourceLayerSummary": "footer (203)"
+    },
+    {
+      "id": "gravity-subheading",
+      "label": "Gravity assist subheading",
+      "groupId": "type",
+      "compositionRole": "Secondary explanatory line that adds charm and context to the poster.",
+      "sourceLayerIds": [
+        "footer"
+      ],
+      "sceneRefs": [
+        "posterCopy.subheading"
+      ],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "cleanupPriority": "medium",
+      "depthTier": "overlay",
+      "activationPhase": "static-poster",
+      "interactivity": "none",
+      "notes": "Keep this copy editable and accessible rather than baking it into artwork.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 203,
+      "sourceLayerSummary": "footer (203)"
+    },
+    {
+      "id": "years-badge",
+      "label": "Every 175 years badge",
+      "groupId": "type",
+      "compositionRole": "Numerical badge that punctuates the title region.",
+      "sourceLayerIds": [
+        "footer",
+        "micro"
+      ],
+      "sceneRefs": [
+        "posterCopy.badgePrefix",
+        "posterCopy.badgeValue",
+        "posterCopy.badgeSuffix"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "high",
+      "depthTier": "overlay",
+      "activationPhase": "interactive-depth",
+      "interactivity": "hover",
+      "notes": "Build the badge shape as SVG but keep the text accessible and editable within the component.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        },
+        {
+          "id": "micro",
+          "available": true,
+          "file": "grand-tour-vtracer.micro.svg",
+          "count": 43,
+          "approxCoverage": 0.0028
+        }
+      ],
+      "totalSourceCount": 246,
+      "sourceLayerSummary": "footer (203), micro (43)"
+    },
+    {
+      "id": "boarding-badge",
+      "label": "Boarding badge",
+      "groupId": "type",
+      "compositionRole": "Small boarding callout that can later become an entry point into a detail state.",
+      "sourceLayerIds": [
+        "footer",
+        "micro"
+      ],
+      "sceneRefs": [
+        "posterCopy.boarding"
+      ],
+      "recommendedAction": "procedural-svg",
+      "finalFormat": "react-component",
+      "cleanupPriority": "medium",
+      "depthTier": "overlay",
+      "activationPhase": "interactive-depth",
+      "interactivity": "focus",
+      "notes": "This is a nice candidate for a hoverable micro-interaction once the static poster is locked.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        },
+        {
+          "id": "micro",
+          "available": true,
+          "file": "grand-tour-vtracer.micro.svg",
+          "count": 43,
+          "approxCoverage": 0.0028
+        }
+      ],
+      "totalSourceCount": 246,
+      "sourceLayerSummary": "footer (203), micro (43)"
+    },
+    {
+      "id": "footer-mission-copy",
+      "label": "Footer mission copy",
+      "groupId": "type",
+      "compositionRole": "Lower lockup and route detail copy that grounds the poster with mission-era context.",
+      "sourceLayerIds": [
+        "footer"
+      ],
+      "sceneRefs": [],
+      "recommendedAction": "procedural-html-css",
+      "finalFormat": "html-css",
+      "cleanupPriority": "high",
+      "depthTier": "overlay",
+      "activationPhase": "static-poster",
+      "interactivity": "none",
+      "notes": "Treat as semantic layout copy, then layer authored divider lines beneath it as needed.",
+      "groupLabel": "Type, badges & footer copy",
+      "hero": false,
+      "implemented": true,
+      "sourceLayers": [
+        {
+          "id": "footer",
+          "available": true,
+          "file": "grand-tour-vtracer.footer.svg",
+          "count": 203,
+          "approxCoverage": 0.0693
+        }
+      ],
+      "totalSourceCount": 203,
+      "sourceLayerSummary": "footer (203)"
+    }
+  ]
+}

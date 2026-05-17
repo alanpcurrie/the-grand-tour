@@ -102,9 +102,9 @@ const manifest = {
 	},
 	outputs: written,
 	limitations: [
-		"Bun.Image can decode TIFF natively on macOS and Windows, but it does not emit SVG.",
+		"Bun.Image can decode TIFF natively on macOS and Windows, but Bun.Image alone does not emit SVG.",
 		"Bun.Image is excellent for normalization, resizing, palette reduction, and preview generation.",
-		"Actual raster-to-vector tracing still needs a separate step such as Potrace, VTracer, Inkscape, or Illustrator.",
+		"Use `bun run poster:vectorize` to trace the TIFF-derived PNG into SVG programmatically inside Bun.",
 	],
 };
 

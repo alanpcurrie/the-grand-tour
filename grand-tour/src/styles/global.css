@@ -14,6 +14,14 @@
 	--font-display: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 	--font-sans: Inter, 'Avenir Next', 'Segoe UI', sans-serif;
 	--font-serif: 'Baskerville', 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+	--poster-shared-planet-center-x: 45.45%;
+	--poster-shared-planet-center-y: 39.9923%;
+	--poster-main-green-size: 60.5%;
+	--poster-main-green-half-width: 30.25%;
+	--poster-main-green-half-height: 21.3923%;
+	--poster-turquoise-size: 62.8%;
+	--poster-turquoise-half-width: 31.4%;
+	--poster-turquoise-half-height: 22.2055%;
 }
 
 html {
@@ -55,4 +63,304 @@ a {
 
 ::selection {
 	background: rgba(226, 98, 57, 0.28);
+}
+
+.poster-phase-chip {
+	display: none;
+}
+
+.poster-hotspot:before,
+.poster-hotspot__pulse,
+.poster-hotspot__dot {
+	opacity: 0;
+}
+
+.poster-hotspot:hover .poster-hotspot__pulse,
+.poster-hotspot:focus-visible .poster-hotspot__pulse,
+.poster-hotspot--active .poster-hotspot__pulse,
+.poster-hotspot--selected .poster-hotspot__pulse {
+	opacity: 0.24;
+}
+
+.poster-hotspot:hover .poster-hotspot__dot,
+.poster-hotspot:focus-visible .poster-hotspot__dot,
+.poster-hotspot--active .poster-hotspot__dot,
+.poster-hotspot--selected .poster-hotspot__dot {
+	opacity: 0.94;
+}
+
+/* Poster fidelity overrides: keep the recovered base CSS stable, then refine
+   authored asset alignment here to better match the original print composition. */
+
+.poster-asset--sun-core {
+	top: 33.4%;
+	left: -2.2%;
+	width: 21.5%;
+}
+
+.poster-asset--accent-orbit-planet {
+	top: 27.6%;
+	left: 27.8%;
+	width: 10.4%;
+	aspect-ratio: 1;
+	z-index: 15;
+}
+
+.poster-asset--accent-left-horizon {
+	top: 57.8%;
+	left: -13.8%;
+	width: 24.8%;
+	aspect-ratio: 1;
+	z-index: 4;
+	mix-blend-mode: multiply;
+}
+
+.poster-asset--main-green {
+	top: calc(var(--poster-shared-planet-center-y) - var(--poster-main-green-half-height));
+	left: calc(var(--poster-shared-planet-center-x) - var(--poster-main-green-half-width));
+	width: var(--poster-main-green-size);
+}
+
+.poster-asset--turquoise-lens {
+	top: calc(var(--poster-shared-planet-center-y) - var(--poster-turquoise-half-height));
+	left: calc(var(--poster-shared-planet-center-x) - var(--poster-turquoise-half-width));
+	width: var(--poster-turquoise-size);
+}
+
+.poster-asset--fleet-alpha {
+	top: 39.2%;
+	left: 12.9%;
+	width: 34.8%;
+}
+
+.poster-asset--fleet-beta {
+	top: 25.6%;
+	left: 40.6%;
+	width: 15.2%;
+}
+
+.poster-asset--fleet-gamma {
+	top: 31.8%;
+	left: 37.7%;
+	width: 24.8%;
+}
+
+.poster-asset--fleet-delta {
+	top: 47.1%;
+	left: 50.6%;
+	width: 11.8%;
+}
+
+.poster-asset--magenta-route-column,
+.poster-asset--violet-right,
+.poster-asset--outer-right-orbit,
+.poster-asset--mid-violet-orbit {
+	inset: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.poster-asset--outer-right-orbit {
+	z-index: 4;
+}
+
+.poster-asset--mid-violet-orbit {
+	z-index: 5;
+}
+
+.poster-asset--magenta-route-column {
+	z-index: 6;
+}
+
+.poster-asset--violet-right {
+	filter: none;
+}
+
+.poster-asset--magenta-route-column svg,
+.poster-asset--accent-left-horizon svg,
+.poster-asset--accent-orbit-planet svg,
+.poster-asset--main-green svg,
+.poster-asset--magenta-token svg,
+.poster-asset--teal-dot svg,
+.poster-asset--turquoise-lens svg,
+.poster-asset--violet-right svg,
+.poster-asset--outer-right-orbit svg,
+.poster-asset--mid-violet-orbit svg {
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.poster-flight-wake--fleet-alpha {
+	top: 42.4%;
+	left: 31.2%;
+	width: 14.8%;
+	height: 2.2%;
+	transform: rotate(0deg);
+}
+
+.poster-flight-wake--fleet-beta {
+	top: 28.4%;
+	left: 48.8%;
+	width: 8.8%;
+	height: 2.2%;
+	transform: rotate(0deg);
+}
+
+.poster-flight-wake--fleet-gamma {
+	top: 35.1%;
+	left: 50.4%;
+	width: 12.6%;
+	height: 2.4%;
+	transform: rotate(0deg);
+}
+
+.poster-flight-wake--fleet-delta {
+	top: 49%;
+	left: 56.4%;
+	width: 7.2%;
+	height: 1.8%;
+	transform: rotate(0deg);
+}
+
+.poster-title-lockup {
+	left: 4.2%;
+	right: 4.2%;
+	bottom: 6.2%;
+	gap: 0.22rem;
+}
+
+.poster-asset--magenta-token {
+	top: 78.4%;
+	left: 43.2%;
+	width: 10.8%;
+}
+
+.poster-asset--teal-dot {
+	top: 80.6%;
+	left: 4.8%;
+	width: 5.9%;
+}
+
+.poster-kicker {
+	font-size: clamp(0.42rem, 0.24rem + 0.28vw, 0.74rem);
+	letter-spacing: 0.34em;
+	margin-bottom: 0.02rem;
+}
+
+.poster-title {
+	font-size: clamp(3.1rem, 7vw, 7.8rem);
+	line-height: 0.88;
+	letter-spacing: 0.02em;
+}
+
+.poster-title-underline {
+	width: 96%;
+	height: 0.12rem;
+}
+
+.poster-footer-row {
+	grid-template-columns: minmax(0, 1.5fr) auto auto;
+	gap: 0.62rem;
+	align-items: end;
+	margin-top: 0.08rem;
+}
+
+.poster-itinerary {
+	font-size: clamp(0.62rem, 0.4rem + 0.3vw, 0.88rem);
+	letter-spacing: 0.12em;
+}
+
+.poster-subheading {
+	margin-top: 0.02rem;
+	font-size: clamp(0.8rem, 0.56rem + 0.3vw, 1.1rem);
+	letter-spacing: 0.04em;
+	line-height: 1.02;
+	max-width: 15.5rem;
+}
+
+.poster-badge {
+	padding: 0.52rem 0.72rem 0.52rem 1rem;
+	gap: 0.28rem;
+	font-size: clamp(0.5rem, 0.34rem + 0.2vw, 0.74rem);
+	letter-spacing: 0.06em;
+}
+
+.poster-badge-value {
+	min-width: 1.62rem;
+	height: 1.62rem;
+	font-size: 0.9em;
+}
+
+.poster-boarding {
+	min-height: 2.48rem;
+	padding: 0.42rem 0.76rem;
+	font-size: clamp(0.84rem, 0.68rem + 0.26vw, 1.18rem);
+	letter-spacing: 0.06em;
+	background: rgba(250, 234, 208, 0.3);
+}
+
+.poster-mission-copy {
+	display: none;
+}
+
+@media (max-width: 720px) {
+	.poster-title-lockup {
+		bottom: 5.2%;
+	}
+
+	.poster-footer-row {
+		gap: 0.55rem;
+	}
+
+	.poster-hotspot-card {
+		top: 9%;
+		left: auto;
+		right: 4.2%;
+		width: min(44%, 13rem);
+		padding: 0.72rem 0.78rem 0.72rem 0.92rem;
+	}
+
+	.poster-hotspot-card__eyebrow {
+		font-size: 0.44rem;
+	}
+
+	.poster-hotspot-card__title {
+		margin-top: 0.32rem;
+		font-size: 0.82rem;
+		line-height: 1.08;
+	}
+
+	.poster-hotspot-card__description {
+		margin-top: 0.4rem;
+		font-size: 0.62rem;
+		line-height: 1.4;
+	}
+
+	.poster-hotspot-card__facts {
+		margin: 0.56rem 0 0;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.32rem;
+	}
+
+	.poster-hotspot-card__fact {
+		padding: 0.38rem 0.42rem;
+	}
+
+	.poster-hotspot-card__fact-label {
+		font-size: 0.38rem;
+	}
+
+	.poster-hotspot-card__fact-value {
+		font-size: 0.54rem;
+	}
+
+	.poster-hotspot-card__footer {
+		margin-top: 0.5rem;
+	}
+
+	.poster-hotspot-card__hint,
+	.poster-hotspot-card__close {
+		font-size: 0.48rem;
+	}
 }

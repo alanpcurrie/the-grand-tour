@@ -54,6 +54,21 @@ export const posterCopy = {
 	badgeValue: "175",
 	badgeSuffix: "years",
 	boarding: "Now boarding",
+	missionEyebrow: "Route dossier",
+	missionDetails: [
+		{
+			label: "Departures",
+			value: "Earth orbit terminal",
+		},
+		{
+			label: "Travel",
+			value: "Gravity-assist arcs",
+		},
+		{
+			label: "Viewing",
+			value: "Outer planet flybys",
+		},
+	],
 } as const;
 
 export const platformHighlights = [

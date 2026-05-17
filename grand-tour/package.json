@@ -10,6 +10,12 @@
     "build": "astro build",
     "check": "astro check",
     "poster:extract-reference": "bun scripts/extract-reference.mjs",
+    "poster:inventory": "bun scripts/build-poster-asset-inventory.mjs",
+    "poster:install-vtracer": "cargo install --root ./.tools/vtracer-cli vtracer --locked",
+    "poster:pipeline": "bun run poster:extract-reference && bun run poster:vectorize && bun run poster:split-layers && bun run poster:inventory",
+    "poster:split-layers": "bun scripts/split-vector-layers.mjs",
+    "poster:vectorize": "bun scripts/vectorize-reference.mjs",
+    "poster:vectorize:rust": "bun scripts/vectorize-reference.mjs --engine vtracer",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -27,6 +33,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "imagetracerjs": "^1.2.6",
+    "pngjs": "^7.0.0",
+    "svg-path-bbox": "^2.1.0",
+    "svgo": "^4.0.1",
     "typescript": "^6.0.3"
   }
 }
