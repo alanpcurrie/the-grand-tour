@@ -1,0 +1,47 @@
+{
+  "extractedAt": "2026-05-17T13:22:30.353Z",
+  "bunVersion": "1.3.14",
+  "platform": "darwin",
+  "backend": "system",
+  "source": {
+    "file": "grand_tour.tif",
+    "path": "/Users/alan/Projects/the-grand-tour-master/legacy/src/assets/images/grand_tour.tif",
+    "metadata": {
+      "width": 6000,
+      "height": 9000,
+      "format": "tiff"
+    }
+  },
+  "outputs": [
+    {
+      "file": "grand-tour-preview.png",
+      "description": "General preview render for design review and tracing reference.",
+      "bytes": 370744
+    },
+    {
+      "file": "grand-tour-palette-64.png",
+      "description": "Indexed 64-color PNG; useful before segmentation or vector tracing.",
+      "bytes": 53163
+    },
+    {
+      "file": "grand-tour-palette-24.png",
+      "description": "More aggressively reduced color pass for isolating poster bands and planets.",
+      "bytes": 43729
+    },
+    {
+      "file": "grand-tour-grayscale.png",
+      "description": "Greyscale pass for contrast studies and manual tracing prep.",
+      "bytes": 204828
+    },
+    {
+      "file": "grand-tour-lqip.txt",
+      "description": "Small inline placeholder data URL for reference workflows.",
+      "bytes": 1863
+    }
+  ],
+  "limitations": [
+    "Bun.Image can decode TIFF natively on macOS and Windows, but it does not emit SVG.",
+    "Bun.Image is excellent for normalization, resizing, palette reduction, and preview generation.",
+    "Actual raster-to-vector tracing still needs a separate step such as Potrace, VTracer, Inkscape, or Illustrator."
+  ]
+}
