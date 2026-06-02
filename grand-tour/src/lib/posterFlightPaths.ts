@@ -4,12 +4,24 @@ export type PosterFleetShipId =
 	| "fleet-gamma"
 	| "fleet-delta";
 
+export type PosterFleetMotionMode = "drift" | "orbit";
+
 export type PosterRouteStripeId =
 	| "middle-orange"
 	| "center-teal"
 	| "mid-route"
 	| "mid-green"
 	| "footer-lane";
+
+export type PosterOrbitLoop = {
+	duration: number;
+	times: readonly number[];
+	xPercentKeyframes: readonly number[];
+	yPercentKeyframes: readonly number[];
+	rotateKeyframes: readonly number[];
+	scaleKeyframes: readonly number[];
+	opacityKeyframes: readonly number[];
+};
 
 export type PosterFlightPath = {
 	id: PosterFleetShipId;
@@ -24,6 +36,7 @@ export type PosterFlightPath = {
 	wakeAccent: string;
 	wakeGlow: string;
 	wakeSpark: string;
+	orbitLoop: PosterOrbitLoop;
 };
 
 export type PosterRouteSignal = {
@@ -46,13 +59,22 @@ export const posterFlightPaths: readonly PosterFlightPath[] = [
 		duration: 21,
 		delay: 0.2,
 		zIndex: 19,
-		xKeyframes: [0, 16, 34, 12, 0],
-		yKeyframes: [0, -10, -4, 9, 0],
-		rotateKeyframes: [0, 1.4, -0.4, 0.8, 0],
-		scaleKeyframes: [1, 1.018, 1.028, 1.01, 1],
+		xKeyframes: [0, 20, 46, 26, 0],
+		yKeyframes: [0, -4, -2, 3, 0],
+		rotateKeyframes: [0, 0.7, -0.2, 0.4, 0],
+		scaleKeyframes: [1, 1.014, 1.022, 1.008, 1],
 		wakeAccent: "rgba(226, 98, 57, 0.96)",
 		wakeGlow: "rgba(226, 98, 57, 0.26)",
 		wakeSpark: "rgba(255, 240, 214, 0.92)",
+		orbitLoop: {
+			duration: 24,
+			times: [0, 0.28, 0.46, 0.5, 1],
+			xPercentKeyframes: [0, -52, -118, 118, 0],
+			yPercentKeyframes: [0, -0.4, -1.1, 1.2, 0],
+			rotateKeyframes: [0, -0.6, -1.4, 0.8, 0],
+			scaleKeyframes: [1, 1.018, 0.97, 0.972, 1],
+			opacityKeyframes: [1, 0.92, 0.12, 0.18, 1],
+		},
 	},
 	{
 		id: "fleet-beta",
@@ -60,13 +82,22 @@ export const posterFlightPaths: readonly PosterFlightPath[] = [
 		duration: 18,
 		delay: 0.7,
 		zIndex: 20,
-		xKeyframes: [0, 10, 22, 6, 0],
-		yKeyframes: [0, -12, -6, 6, 0],
-		rotateKeyframes: [-1, 0.4, -0.2, -1.4, -1],
-		scaleKeyframes: [1, 1.012, 1.024, 1.006, 1],
+		xKeyframes: [0, 14, 30, 18, 0],
+		yKeyframes: [0, -3, -5, 2, 0],
+		rotateKeyframes: [-1, -0.4, -0.7, -1.2, -1],
+		scaleKeyframes: [1, 1.01, 1.018, 1.004, 1],
 		wakeAccent: "rgba(129, 174, 57, 0.94)",
 		wakeGlow: "rgba(129, 174, 57, 0.24)",
 		wakeSpark: "rgba(246, 250, 221, 0.9)",
+		orbitLoop: {
+			duration: 22,
+			times: [0, 0.3, 0.48, 0.52, 1],
+			xPercentKeyframes: [0, -48, -116, 120, 0],
+			yPercentKeyframes: [0, -0.2, -0.9, 1.1, 0],
+			rotateKeyframes: [-1, -1.6, -2.8, 0.4, -1],
+			scaleKeyframes: [1, 1.012, 0.968, 0.97, 1],
+			opacityKeyframes: [1, 0.88, 0.1, 0.16, 1],
+		},
 	},
 	{
 		id: "fleet-gamma",
@@ -74,13 +105,22 @@ export const posterFlightPaths: readonly PosterFlightPath[] = [
 		duration: 19,
 		delay: 0.35,
 		zIndex: 21,
-		xKeyframes: [0, 18, 10, -2, 0],
-		yKeyframes: [0, -8, -18, -4, 0],
-		rotateKeyframes: [1, 2.2, 0.6, 1.5, 1],
-		scaleKeyframes: [1, 1.016, 1.03, 1.01, 1],
+		xKeyframes: [0, 18, 36, 20, 0],
+		yKeyframes: [0, -4, -8, -2, 0],
+		rotateKeyframes: [1, 1.6, 0.8, 1.2, 1],
+		scaleKeyframes: [1, 1.014, 1.022, 1.008, 1],
 		wakeAccent: "rgba(0, 152, 154, 0.96)",
 		wakeGlow: "rgba(0, 152, 154, 0.24)",
 		wakeSpark: "rgba(228, 254, 255, 0.92)",
+		orbitLoop: {
+			duration: 23,
+			times: [0, 0.26, 0.45, 0.5, 1],
+			xPercentKeyframes: [0, -50, -120, 122, 0],
+			yPercentKeyframes: [0, -0.6, -1.4, 1.4, 0],
+			rotateKeyframes: [1, 0.2, -0.9, 1.8, 1],
+			scaleKeyframes: [1, 1.016, 0.966, 0.972, 1],
+			opacityKeyframes: [1, 0.9, 0.1, 0.16, 1],
+		},
 	},
 	{
 		id: "fleet-delta",
@@ -88,13 +128,22 @@ export const posterFlightPaths: readonly PosterFlightPath[] = [
 		duration: 20,
 		delay: 1,
 		zIndex: 19,
-		xKeyframes: [0, 12, 28, 8, 0],
-		yKeyframes: [0, -6, -16, -2, 0],
-		rotateKeyframes: [-3, -1.4, -4.2, -2.2, -3],
-		scaleKeyframes: [1, 1.01, 1.022, 1.004, 1],
+		xKeyframes: [0, 16, 34, 18, 0],
+		yKeyframes: [0, -2, -6, 1, 0],
+		rotateKeyframes: [-3, -2.4, -3.4, -2.8, -3],
+		scaleKeyframes: [1, 1.008, 1.016, 1.003, 1],
 		wakeAccent: "rgba(236, 31, 38, 0.96)",
 		wakeGlow: "rgba(236, 31, 38, 0.24)",
 		wakeSpark: "rgba(255, 232, 220, 0.92)",
+		orbitLoop: {
+			duration: 24,
+			times: [0, 0.32, 0.5, 0.54, 1],
+			xPercentKeyframes: [0, -46, -114, 118, 0],
+			yPercentKeyframes: [0, 0.1, -0.8, 1.3, 0],
+			rotateKeyframes: [-3, -3.6, -4.8, -1.6, -3],
+			scaleKeyframes: [1, 1.01, 0.97, 0.974, 1],
+			opacityKeyframes: [1, 0.86, 0.1, 0.15, 1],
+		},
 	},
 ];
 

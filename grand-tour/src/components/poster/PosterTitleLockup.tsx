@@ -19,11 +19,23 @@ export function PosterTitleLockup() {
 					<p className="poster-subheading">{posterCopy.subheading}</p>
 				</div>
 				<div className="poster-badge">
-					<span>{posterCopy.badgePrefix}</span>
-					<span className="poster-badge-value">{posterCopy.badgeValue}</span>
-					<span>{posterCopy.badgeSuffix}</span>
+					<span className="poster-badge__label poster-badge__label--start">
+						{posterCopy.badgePrefix}
+					</span>
+					<span className="poster-badge-value">
+						<span className="poster-badge-value__ring" />
+						<span className="poster-badge-value__text">
+							{posterCopy.badgeValue}
+						</span>
+					</span>
+					<span className="poster-badge__label poster-badge__label--end">
+						{posterCopy.badgeSuffix}
+					</span>
 				</div>
-				<div className="poster-boarding">{posterCopy.boarding}</div>
+				<div className="poster-boarding">
+					<span className="poster-boarding__inner" />
+					<span className="poster-boarding__text">{posterCopy.boarding}</span>
+				</div>
 			</div>
 		</div>
 	);

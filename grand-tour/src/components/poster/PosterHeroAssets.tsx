@@ -1,10 +1,16 @@
 import { motion } from "motion/react";
 import type { CSSProperties, ReactNode } from "react";
 
+import type { PosterFleetMotionMode } from "../../lib/posterFlightPaths";
 import { slowFloat } from "../../lib/motionPresets";
 
 type HeroAssetProps = {
 	reducedMotion: boolean;
+};
+
+type SaturnRingMotionProps = HeroAssetProps & {
+	motionEnabled: boolean;
+	motionMode: PosterFleetMotionMode;
 };
 
 type StripeAssetProps = HeroAssetProps & {
@@ -19,9 +25,11 @@ type StripeAssetProps = HeroAssetProps & {
 	textureShadowOpacity?: number;
 	textureSoftOpacity?: number;
 	textureCore?: string;
+	textureGrain?: string;
 	textureGlaze?: string;
 	textureShadow?: string;
 	textureSoft?: string;
+	textureGrainOpacity?: number;
 	children?: ReactNode;
 };
 
@@ -31,6 +39,7 @@ type ShipAssetProps = HeroAssetProps & {
 	className: string;
 	delay?: number;
 	drift: number;
+	motionEnabled?: boolean;
 	rotation: number;
 	children: ReactNode;
 	duration: number;
@@ -42,8 +51,12 @@ type OrbitAssetProps = HeroAssetProps & {
 	className: string;
 	delay?: number;
 	duration: number;
+	motionEnabled: boolean;
+	motionMode: PosterFleetMotionMode;
 	rotateDelta: number;
 	restingRotate: number;
+	spinDuration: number;
+	spinRotation: number;
 	children: ReactNode;
 };
 
@@ -92,9 +105,18 @@ const POSTER_SHARED_PLANET_CENTER = {
 } as const;
 
 const POSTER_ORBIT_SYSTEM_CENTER = {
-	x: 556,
-	y: 792,
+	x: POSTER_SHARED_PLANET_CENTER.x + 8,
+	y: POSTER_SHARED_PLANET_CENTER.y + 6,
 } as const;
+
+const POSTER_ORBIT_SYSTEM_CENTER_PERCENT = {
+	x: (POSTER_ORBIT_SYSTEM_CENTER.x / POSTER_SCENE_VIEWBOX.width) * 100,
+	y: (POSTER_ORBIT_SYSTEM_CENTER.y / POSTER_SCENE_VIEWBOX.height) * 100,
+} as const;
+
+const POSTER_SATURN_RING_TRANSFORM_ORIGIN = `${POSTER_ORBIT_SYSTEM_CENTER_PERCENT.x}% ${POSTER_ORBIT_SYSTEM_CENTER_PERCENT.y}%`;
+
+const POSTER_SATURN_RING_ROTATION = 34;
 
 const POSTER_VIOLET_RIGHT_MASS = {
 	centerX: 1174,
@@ -120,6 +142,8 @@ function PosterStripeAsset({
 	reducedMotion,
 	textureCoreOpacity = 0.16,
 	textureCore = "rgba(255, 247, 236, 0.18)",
+	textureGrain = "rgba(255, 249, 240, 0.14)",
+	textureGrainOpacity = 0.08,
 	textureShadowOpacity = 0.12,
 	textureGlaze = "rgba(255, 251, 242, 0.26)",
 	textureShadow = "rgba(63, 46, 50, 0.22)",
@@ -130,6 +154,8 @@ function PosterStripeAsset({
 		"--poster-stripe-beam-opacity": beamOpacity,
 		"--poster-stripe-core": textureCore,
 		"--poster-stripe-core-opacity": textureCoreOpacity,
+		"--poster-stripe-grain": textureGrain,
+		"--poster-stripe-grain-opacity": textureGrainOpacity,
 		"--poster-stripe-glaze": textureGlaze,
 		"--poster-stripe-shadow": textureShadow,
 		"--poster-stripe-shadow-opacity": textureShadowOpacity,
@@ -167,6 +193,7 @@ function PosterShipAsset({
 	delay = 0,
 	drift,
 	duration,
+	motionEnabled = true,
 	reducedMotion,
 	rotation,
 	viewBox = "0 0 320 132",
@@ -177,16 +204,27 @@ function PosterShipAsset({
 			data-asset-id={assetId}
 			initial={false}
 			animate={
-				reducedMotion
-					? { rotate: rotation, scale: 1 }
-					: {
-							x: [0, drift, 0],
-							y: [0, -10, 0],
-							rotate: [rotation, rotation - 1.3, rotation],
-							scale: [1, 1.02, 1],
+				!motionEnabled
+					? {
+							x: 0,
+							y: 0,
+							rotate: rotation,
+							scale: 1,
 						}
+					: reducedMotion
+						? { rotate: rotation, scale: 1 }
+						: {
+								x: [0, drift, 0],
+								y: [0, -10, 0],
+								rotate: [rotation, rotation - 1.3, rotation],
+								scale: [1, 1.02, 1],
+							}
 			}
-			transition={slowFloat(duration, delay)}
+			transition={
+				motionEnabled
+					? slowFloat(duration, delay)
+					: { duration: 0.24, ease: "easeOut" }
+			}
 		>
 			<motion.svg viewBox={viewBox} role="img" aria-label={ariaLabel}>
 				{children}
@@ -201,27 +239,53 @@ function PosterOrbitAsset({
 	className,
 	delay = 0,
 	duration,
+	motionEnabled,
+	motionMode,
 	reducedMotion,
 	rotateDelta,
 	restingRotate,
+	spinDuration,
+	spinRotation,
 }: OrbitAssetProps) {
+	const orbitSpinActive =
+		!reducedMotion && motionEnabled && motionMode === "orbit";
+	const orbitAssetStyle = {
+		transformOrigin: POSTER_SATURN_RING_TRANSFORM_ORIGIN,
+	} as CSSProperties;
+
 	return (
 		<motion.div
 			className={`poster-asset ${className}`}
 			data-asset-id={assetId}
+			style={orbitAssetStyle}
 			initial={false}
 			animate={
-				reducedMotion
-					? { rotate: restingRotate }
-					: {
-							rotate: [
-								restingRotate,
-								restingRotate + rotateDelta,
-								restingRotate,
-							],
+				orbitSpinActive
+					? {
+							rotate: [restingRotate, restingRotate + spinRotation],
 						}
+					: reducedMotion
+						? { rotate: restingRotate }
+						: {
+								rotate: [
+									restingRotate,
+									restingRotate + rotateDelta,
+									restingRotate,
+								],
+							}
 			}
-			transition={slowFloat(duration, delay)}
+			transition={
+				orbitSpinActive
+					? {
+							rotate: {
+								duration: spinDuration,
+								delay,
+								ease: "linear",
+								repeat: Number.POSITIVE_INFINITY,
+							},
+						}
+					: slowFloat(duration, delay)
+			}
 		>
 			{children}
 		</motion.div>
@@ -338,6 +402,7 @@ function PosterStripeTexture() {
 		<>
 			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--soft" />
 			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--core" />
+			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--grain" />
 			<span className="poster-asset-stripe__texture poster-asset-stripe__texture--shadow" />
 		</>
 	);
@@ -353,6 +418,9 @@ function PosterStrokePlanet({
 }: StrokePlanetProps) {
 	const colors = STROKE_PLANET_PALETTES[palette];
 	const clipId = `${assetId}-${side}-planet-clip`;
+	const shellGradientId = `${assetId}-${side}-planet-shell`;
+	const shadowGradientId = `${assetId}-${side}-planet-shadow`;
+	const highlightGradientId = `${assetId}-${side}-planet-highlight`;
 	const planetStyle = {
 		height: size,
 		[side]: offset,
@@ -369,9 +437,46 @@ function PosterStrokePlanet({
 					<clipPath id={clipId}>
 						<circle cx="50" cy="50" r="45" />
 					</clipPath>
+					<radialGradient id={shellGradientId} cx="34%" cy="30%" r="72%">
+						<stop offset="0%" stopColor={colors.highlight} />
+						<stop offset="28%" stopColor={colors.shell} />
+						<stop offset="72%" stopColor={colors.shell} />
+						<stop offset="100%" stopColor={colors.shadow} />
+					</radialGradient>
+					<radialGradient id={shadowGradientId} cx="68%" cy="64%" r="56%">
+						<stop offset="0%" stopColor={colors.shadow} stopOpacity="0" />
+						<stop offset="76%" stopColor={colors.shadow} stopOpacity="0.18" />
+						<stop offset="100%" stopColor={colors.shadow} stopOpacity="0.58" />
+					</radialGradient>
+					<radialGradient id={highlightGradientId} cx="32%" cy="28%" r="56%">
+						<stop offset="0%" stopColor={colors.highlight} stopOpacity="0.76" />
+						<stop offset="70%" stopColor={colors.highlight} stopOpacity="0" />
+					</radialGradient>
 				</defs>
-				<circle cx="50" cy="50" r="50" fill={colors.shadow} opacity="0.38" />
-				<circle cx="50" cy="50" r="45" fill={colors.shell} opacity="0.96" />
+				<circle cx="50" cy="50" r="50" fill={colors.shadow} opacity="0.22" />
+				<circle
+					cx="50"
+					cy="50"
+					r="45.5"
+					fill={`url(#${shellGradientId})`}
+					opacity="0.98"
+				/>
+				<circle
+					cx="56"
+					cy="58"
+					r="42"
+					fill={`url(#${shadowGradientId})`}
+					opacity="0.52"
+				/>
+				<ellipse
+					cx="35"
+					cy="30"
+					rx="18"
+					ry="12"
+					fill={`url(#${highlightGradientId})`}
+					opacity="0.62"
+					transform="rotate(-18 35 30)"
+				/>
 				<motion.g
 					clipPath={`url(#${clipId})`}
 					initial={false}
@@ -408,7 +513,7 @@ function PosterStrokePlanet({
 					r="45"
 					fill="none"
 					stroke={colors.rim}
-					strokeWidth="3"
+					strokeWidth="2.6"
 				/>
 			</svg>
 		</span>
@@ -902,21 +1007,51 @@ export function PosterYellowSweep({ reducedMotion }: HeroAssetProps) {
 	);
 }
 
-export function PosterMagentaRouteColumn({ reducedMotion }: HeroAssetProps) {
+export function PosterMagentaRouteColumn({
+	motionEnabled,
+	motionMode,
+	reducedMotion,
+}: SaturnRingMotionProps) {
+	const orbitSpinActive =
+		!reducedMotion && motionEnabled && motionMode === "orbit";
+	const ringColumnStyle = {
+		transformOrigin: POSTER_SATURN_RING_TRANSFORM_ORIGIN,
+	} as CSSProperties;
+
 	return (
 		<motion.div
 			className="poster-asset poster-asset--magenta-route-column"
 			data-asset-id="magenta-route-column"
+			style={ringColumnStyle}
 			initial={false}
 			animate={
 				reducedMotion
-					? undefined
-					: {
-							y: [0, -4, 0],
-							opacity: [0.72, 0.82, 0.72],
-						}
+					? { rotate: 0 }
+					: orbitSpinActive
+						? {
+								y: [0, -4, 0],
+								opacity: [0.72, 0.82, 0.72],
+								rotate: [0, 360],
+							}
+						: {
+								y: [0, -4, 0],
+								opacity: [0.72, 0.82, 0.72],
+								rotate: 0,
+							}
 			}
-			transition={slowFloat(18, 0.15)}
+			transition={
+				orbitSpinActive
+					? {
+							y: slowFloat(18, 0.15),
+							opacity: slowFloat(18, 0.15),
+							rotate: {
+								duration: 196,
+								ease: "linear",
+								repeat: Number.POSITIVE_INFINITY,
+							},
+						}
+					: slowFloat(18, 0.15)
+			}
 		>
 			<svg viewBox="0 0 1067 1600" aria-hidden="true" focusable="false">
 				<defs>
@@ -944,42 +1079,50 @@ export function PosterMagentaRouteColumn({ reducedMotion }: HeroAssetProps) {
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="156"
-					ry="760"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="148"
+					ry="732"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="rgba(92, 33, 77, 0.16)"
-					strokeWidth="52"
+					strokeWidth="34"
 					strokeLinecap="round"
 					filter="url(#magenta-orbit-band-blur)"
-					opacity="0.22"
+					opacity="0.18"
 				/>
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="156"
-					ry="760"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="148"
+					ry="732"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="url(#magenta-orbit-band)"
-					strokeWidth="28"
+					strokeWidth="18"
 					strokeLinecap="round"
-					opacity="0.72"
+					opacity="0.62"
 				/>
 			</svg>
 		</motion.div>
 	);
 }
 
-export function PosterOuterRightOrbitArc({ reducedMotion }: HeroAssetProps) {
+export function PosterOuterRightOrbitArc({
+	motionEnabled,
+	motionMode,
+	reducedMotion,
+}: SaturnRingMotionProps) {
 	return (
 		<PosterOrbitAsset
 			assetId="outer-right-orbit-arc"
 			className="poster-asset--outer-right-orbit"
 			duration={20}
+			motionEnabled={motionEnabled}
+			motionMode={motionMode}
 			rotateDelta={0.8}
 			reducedMotion={reducedMotion}
 			restingRotate={0}
+			spinDuration={168}
+			spinRotation={360}
 		>
 			<svg viewBox="0 0 1067 1600" aria-hidden="true" focusable="false">
 				<defs>
@@ -1007,43 +1150,51 @@ export function PosterOuterRightOrbitArc({ reducedMotion }: HeroAssetProps) {
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="226"
-					ry="806"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="214"
+					ry="780"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="rgba(234, 84, 86, 0.16)"
-					strokeWidth="82"
+					strokeWidth="56"
 					strokeLinecap="round"
 					filter="url(#outer-orbit-blur)"
-					opacity="0.18"
+					opacity="0.16"
 				/>
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="226"
-					ry="806"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="214"
+					ry="780"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="url(#outer-orbit-stroke)"
-					strokeWidth="60"
+					strokeWidth="40"
 					strokeLinecap="round"
-					opacity="0.82"
+					opacity="0.78"
 				/>
 			</svg>
 		</PosterOrbitAsset>
 	);
 }
 
-export function PosterMidVioletOrbitArc({ reducedMotion }: HeroAssetProps) {
+export function PosterMidVioletOrbitArc({
+	motionEnabled,
+	motionMode,
+	reducedMotion,
+}: SaturnRingMotionProps) {
 	return (
 		<PosterOrbitAsset
 			assetId="mid-violet-orbit-arc"
 			className="poster-asset--mid-violet-orbit"
 			delay={0.2}
 			duration={16}
+			motionEnabled={motionEnabled}
+			motionMode={motionMode}
 			rotateDelta={-0.6}
 			reducedMotion={reducedMotion}
 			restingRotate={0}
+			spinDuration={144}
+			spinRotation={-360}
 		>
 			<svg viewBox="0 0 1067 1600" aria-hidden="true" focusable="false">
 				<defs>
@@ -1071,27 +1222,27 @@ export function PosterMidVioletOrbitArc({ reducedMotion }: HeroAssetProps) {
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="178"
-					ry="774"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="170"
+					ry="748"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="rgba(70, 30, 64, 0.12)"
-					strokeWidth="60"
+					strokeWidth="34"
 					strokeLinecap="round"
 					filter="url(#mid-violet-orbit-blur)"
-					opacity="0.12"
+					opacity="0.1"
 				/>
 				<ellipse
 					cx={POSTER_ORBIT_SYSTEM_CENTER.x}
 					cy={POSTER_ORBIT_SYSTEM_CENTER.y}
-					rx="178"
-					ry="774"
-					transform={`rotate(35 ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
+					rx="170"
+					ry="748"
+					transform={`rotate(${POSTER_SATURN_RING_ROTATION} ${POSTER_ORBIT_SYSTEM_CENTER.x} ${POSTER_ORBIT_SYSTEM_CENTER.y})`}
 					fill="none"
 					stroke="url(#mid-violet-orbit-stroke)"
-					strokeWidth="20"
+					strokeWidth="12"
 					strokeLinecap="round"
-					opacity="0.16"
+					opacity="0.2"
 				/>
 			</svg>
 		</PosterOrbitAsset>
@@ -1485,6 +1636,14 @@ export function PosterTopTealStripe({ reducedMotion }: HeroAssetProps) {
 			textureSoftOpacity={0.14}
 			textureSoft="rgba(203, 244, 248, 0.14)"
 		>
+			<PosterStrokePlanet
+				assetId="top-teal-stripe"
+				offset="0.12%"
+				palette="plum"
+				reducedMotion={reducedMotion}
+				side="start"
+				size="clamp(0.24rem, 0.68vw, 0.46rem)"
+			/>
 			<span className="poster-asset-stripe__beam" />
 		</PosterStripeAsset>
 	);
@@ -1734,20 +1893,22 @@ export function PosterFooterLaneStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="footer-lane-stripe"
-			beamOpacity={0.1}
+			beamOpacity={0.08}
 			className="poster-asset--footer-lane-stripe"
-			drift={-20}
+			drift={-16}
 			duration={21}
 			delay={0.9}
-			opacityRange={[0.66, 0.74, 0.66]}
+			opacityRange={[0.62, 0.74, 0.62]}
 			reducedMotion={reducedMotion}
-			textureCoreOpacity={0.14}
-			textureCore="rgba(228, 244, 173, 0.18)"
-			textureGlaze="rgba(247, 251, 228, 0.24)"
+			textureCoreOpacity={0.12}
+			textureCore="rgba(221, 234, 160, 0.16)"
+			textureGrain="rgba(247, 249, 227, 0.14)"
+			textureGrainOpacity={0.1}
+			textureGlaze="rgba(249, 249, 227, 0.24)"
 			textureShadowOpacity={0.12}
-			textureShadow="rgba(70, 86, 35, 0.24)"
+			textureShadow="rgba(90, 98, 58, 0.18)"
 			textureSoftOpacity={0.16}
-			textureSoft="rgba(203, 229, 136, 0.14)"
+			textureSoft="rgba(210, 223, 138, 0.12)"
 		>
 			<PosterStrokePlanet
 				assetId="footer-lane-stripe"
@@ -1758,6 +1919,14 @@ export function PosterFooterLaneStripe({ reducedMotion }: HeroAssetProps) {
 				size="1.9%"
 			/>
 			<span className="poster-asset-stripe__beam" />
+			<PosterStrokePlanet
+				assetId="footer-lane-stripe"
+				offset="0.18%"
+				palette="amber"
+				reducedMotion={reducedMotion}
+				side="end"
+				size="clamp(0.18rem, 0.48vw, 0.34rem)"
+			/>
 		</PosterStripeAsset>
 	);
 }
@@ -1766,35 +1935,432 @@ export function PosterFooterRedStripe({ reducedMotion }: HeroAssetProps) {
 	return (
 		<PosterStripeAsset
 			assetId="footer-red-stripe"
-			beamOpacity={0.1}
+			beamOpacity={0.08}
 			className="poster-asset--footer-red-stripe"
-			drift={28}
+			drift={18}
 			duration={14}
 			delay={0.2}
-			opacityRange={[0.72, 0.82, 0.72]}
+			opacityRange={[0.76, 0.86, 0.76]}
 			reducedMotion={reducedMotion}
 			textureCoreOpacity={0.14}
-			textureCore="rgba(255, 222, 214, 0.16)"
-			textureGlaze="rgba(255, 246, 241, 0.2)"
+			textureCore="rgba(244, 220, 232, 0.14)"
+			textureGrain="rgba(247, 236, 241, 0.14)"
+			textureGrainOpacity={0.1}
+			textureGlaze="rgba(255, 245, 248, 0.18)"
 			textureShadowOpacity={0.12}
-			textureShadow="rgba(112, 33, 46, 0.24)"
+			textureShadow="rgba(67, 31, 58, 0.28)"
 			textureSoftOpacity={0.16}
-			textureSoft="rgba(248, 175, 165, 0.14)"
+			textureSoft="rgba(132, 58, 110, 0.16)"
 		>
+			<span className="poster-asset-footer-band__shadow" />
+			<span className="poster-asset-footer-band__connector" />
+			<span className="poster-asset-footer-band__body" />
+			<span className="poster-asset-footer-band__cream-rule" />
+			<span className="poster-asset-footer-band__orange-lane poster-asset-footer-band__orange-lane--top" />
+			<span className="poster-asset-footer-band__orange-lane poster-asset-footer-band__orange-lane--mid" />
+			<span className="poster-asset-footer-band__teal-underpaint" />
+			<span className="poster-asset-footer-band__cutout" />
 			<span className="poster-asset-stripe__beam" />
-			<PosterStrokePlanet
-				assetId="footer-red-stripe"
-				offset="0.28%"
-				palette="green"
-				reducedMotion={reducedMotion}
-				side="end"
-				size="2.4%"
-			/>
 		</PosterStripeAsset>
 	);
 }
 
-export function PosterFleetAlphaArrow({ reducedMotion }: HeroAssetProps) {
+export function PosterBottomRightDetailField({
+	reducedMotion,
+}: HeroAssetProps) {
+	return (
+		<>
+			<PosterStripeAsset
+				assetId="bottom-right-coral-lane"
+				beamOpacity={0.09}
+				className="poster-asset--bottom-right-coral-lane"
+				drift={14}
+				duration={16}
+				delay={0.18}
+				opacityRange={[0.58, 0.7, 0.58]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.12}
+				textureCore="rgba(255, 220, 185, 0.16)"
+				textureGrain="rgba(255, 245, 233, 0.16)"
+				textureGrainOpacity={0.1}
+				textureGlaze="rgba(255, 248, 239, 0.22)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(114, 52, 55, 0.22)"
+				textureSoftOpacity={0.14}
+				textureSoft="rgba(241, 145, 82, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="bottom-right-coral-lane"
+					offset="0.14%"
+					palette="plum"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.22rem, 0.62vw, 0.44rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="bottom-right-plum-tail"
+				beamOpacity={0.08}
+				className="poster-asset--bottom-right-plum-tail"
+				drift={-12}
+				duration={18}
+				delay={0.42}
+				opacityRange={[0.5, 0.62, 0.5]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(233, 221, 216, 0.16)"
+				textureGrain="rgba(244, 236, 230, 0.16)"
+				textureGrainOpacity={0.1}
+				textureGlaze="rgba(252, 244, 239, 0.18)"
+				textureShadowOpacity={0.12}
+				textureShadow="rgba(90, 62, 55, 0.24)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(132, 96, 79, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="bottom-right-plum-tail"
+					offset="0.12%"
+					palette="green"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.18rem, 0.52vw, 0.38rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="footer-cream-lane"
+				beamOpacity={0.06}
+				className="poster-asset--footer-cream-lane"
+				drift={8}
+				duration={20}
+				delay={0.14}
+				opacityRange={[0.74, 0.84, 0.74]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(255, 249, 237, 0.16)"
+				textureGrain="rgba(255, 252, 246, 0.14)"
+				textureGrainOpacity={0.08}
+				textureGlaze="rgba(255, 253, 248, 0.2)"
+				textureShadowOpacity={0.08}
+				textureShadow="rgba(166, 116, 69, 0.16)"
+				textureSoftOpacity={0.1}
+				textureSoft="rgba(251, 201, 114, 0.1)"
+			>
+				<PosterStrokePlanet
+					assetId="footer-cream-lane"
+					offset="0.12%"
+					palette="amber"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.68rem, 1.7vw, 1.12rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="footer-teal-underlay"
+				beamOpacity={0.05}
+				className="poster-asset--footer-teal-underlay"
+				drift={-9}
+				duration={19}
+				delay={0.24}
+				opacityRange={[0.42, 0.5, 0.42]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.08}
+				textureCore="rgba(196, 219, 214, 0.14)"
+				textureGrain="rgba(241, 248, 246, 0.12)"
+				textureGrainOpacity={0.08}
+				textureGlaze="rgba(248, 251, 249, 0.14)"
+				textureShadowOpacity={0.08}
+				textureShadow="rgba(86, 108, 104, 0.16)"
+				textureSoftOpacity={0.08}
+				textureSoft="rgba(183, 205, 201, 0.12)"
+			>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="footer-orange-overlay"
+				beamOpacity={0.08}
+				className="poster-asset--footer-orange-overlay"
+				drift={13}
+				duration={15}
+				delay={0.1}
+				opacityRange={[0.68, 0.8, 0.68]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.12}
+				textureCore="rgba(255, 223, 168, 0.16)"
+				textureGrain="rgba(255, 244, 229, 0.16)"
+				textureGrainOpacity={0.1}
+				textureGlaze="rgba(255, 250, 239, 0.18)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(137, 71, 49, 0.22)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(248, 171, 86, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="footer-orange-overlay"
+					offset="0.16%"
+					palette="plum"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.2rem, 0.56vw, 0.4rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="footer-orange-spark-trace"
+				beamOpacity={0.08}
+				className="poster-asset--footer-orange-spark-trace"
+				drift={11}
+				duration={14}
+				delay={0.28}
+				opacityRange={[0.62, 0.78, 0.62]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.12}
+				textureCore="rgba(255, 223, 170, 0.18)"
+				textureGrain="rgba(255, 244, 229, 0.16)"
+				textureGrainOpacity={0.1}
+				textureGlaze="rgba(255, 249, 238, 0.18)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(129, 68, 48, 0.22)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(245, 154, 86, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="footer-orange-spark-trace"
+					offset="0.14%"
+					palette="deepTeal"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.16rem, 0.44vw, 0.32rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="footer-ember-flicker"
+				beamOpacity={0.07}
+				className="poster-asset--footer-ember-flicker"
+				drift={9}
+				duration={17}
+				delay={0.08}
+				opacityRange={[0.52, 0.68, 0.52]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(255, 223, 178, 0.16)"
+				textureGrain="rgba(255, 248, 236, 0.14)"
+				textureGrainOpacity={0.1}
+				textureGlaze="rgba(255, 251, 242, 0.16)"
+				textureShadowOpacity={0.08}
+				textureShadow="rgba(149, 74, 45, 0.18)"
+				textureSoftOpacity={0.1}
+				textureSoft="rgba(246, 168, 93, 0.12)"
+			>
+				<PosterStrokePlanet
+					assetId="footer-ember-flicker"
+					offset="0.14%"
+					palette="amber"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.14rem, 0.38vw, 0.28rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="bottom-right-hairline"
+				beamOpacity={0.03}
+				className="poster-asset--bottom-right-hairline"
+				drift={6}
+				duration={22}
+				delay={0.36}
+				opacityRange={[0.48, 0.58, 0.48]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.06}
+				textureCore="rgba(196, 144, 168, 0.12)"
+				textureGrain="rgba(235, 219, 228, 0.12)"
+				textureGrainOpacity={0.08}
+				textureGlaze="rgba(244, 231, 238, 0.12)"
+				textureShadowOpacity={0.08}
+				textureShadow="rgba(103, 44, 84, 0.2)"
+				textureSoftOpacity={0.06}
+				textureSoft="rgba(143, 63, 119, 0.1)"
+			>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+		</>
+	);
+}
+
+export function PosterMicroTailWorlds({ reducedMotion }: HeroAssetProps) {
+	return (
+		<>
+			<PosterStripeAsset
+				assetId="micro-left-ember-tail"
+				beamOpacity={0.08}
+				className="poster-asset--micro-left-ember-tail"
+				drift={14}
+				duration={18}
+				delay={0.35}
+				opacityRange={[0.52, 0.62, 0.52]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.11}
+				textureCore="rgba(255, 226, 190, 0.18)"
+				textureGrain="rgba(255, 246, 232, 0.2)"
+				textureGrainOpacity={0.14}
+				textureGlaze="rgba(255, 248, 239, 0.22)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(112, 43, 55, 0.2)"
+				textureSoftOpacity={0.14}
+				textureSoft="rgba(250, 170, 122, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="micro-left-ember-tail"
+					offset="0.14%"
+					palette="plum"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.28rem, 0.78vw, 0.56rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="micro-left-moss-tail"
+				beamOpacity={0.08}
+				className="poster-asset--micro-left-moss-tail"
+				drift={-10}
+				duration={19}
+				delay={0.22}
+				opacityRange={[0.5, 0.6, 0.5]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(223, 234, 228, 0.18)"
+				textureGrain="rgba(248, 245, 236, 0.18)"
+				textureGrainOpacity={0.12}
+				textureGlaze="rgba(255, 252, 244, 0.2)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(82, 98, 84, 0.18)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(214, 227, 220, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="micro-left-moss-tail"
+					offset="0.18%"
+					palette="green"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.4rem, 0.96vw, 0.72rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="micro-right-amber-tail"
+				beamOpacity={0.08}
+				className="poster-asset--micro-right-amber-tail"
+				drift={12}
+				duration={17}
+				delay={0.48}
+				opacityRange={[0.54, 0.64, 0.54]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.11}
+				textureCore="rgba(255, 224, 162, 0.18)"
+				textureGrain="rgba(255, 246, 224, 0.2)"
+				textureGrainOpacity={0.12}
+				textureGlaze="rgba(255, 249, 237, 0.22)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(126, 84, 52, 0.18)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(250, 197, 108, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="micro-right-amber-tail"
+					offset="0.16%"
+					palette="deepTeal"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.26rem, 0.72vw, 0.52rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="micro-right-sky-tail"
+				beamOpacity={0.08}
+				className="poster-asset--micro-right-sky-tail"
+				drift={-11}
+				duration={21}
+				delay={0.18}
+				opacityRange={[0.52, 0.6, 0.52]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(222, 236, 233, 0.18)"
+				textureGrain="rgba(255, 250, 242, 0.18)"
+				textureGrainOpacity={0.12}
+				textureGlaze="rgba(255, 252, 245, 0.2)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(96, 109, 108, 0.18)"
+				textureSoftOpacity={0.12}
+				textureSoft="rgba(196, 220, 216, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="micro-right-sky-tail"
+					offset="0.14%"
+					palette="red"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.32rem, 0.88vw, 0.64rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+
+			<PosterStripeAsset
+				assetId="micro-right-olive-tail"
+				beamOpacity={0.08}
+				className="poster-asset--micro-right-olive-tail"
+				drift={10}
+				duration={20}
+				delay={0.54}
+				opacityRange={[0.48, 0.56, 0.48]}
+				reducedMotion={reducedMotion}
+				textureCoreOpacity={0.1}
+				textureCore="rgba(212, 205, 184, 0.16)"
+				textureGrain="rgba(241, 232, 210, 0.18)"
+				textureGrainOpacity={0.12}
+				textureGlaze="rgba(248, 238, 220, 0.18)"
+				textureShadowOpacity={0.1}
+				textureShadow="rgba(91, 70, 56, 0.22)"
+				textureSoftOpacity={0.11}
+				textureSoft="rgba(161, 141, 103, 0.14)"
+			>
+				<PosterStrokePlanet
+					assetId="micro-right-olive-tail"
+					offset="0.18%"
+					palette="green"
+					reducedMotion={reducedMotion}
+					side="start"
+					size="clamp(0.24rem, 0.68vw, 0.48rem)"
+				/>
+				<span className="poster-asset-stripe__beam" />
+			</PosterStripeAsset>
+		</>
+	);
+}
+
+type FleetHeroAssetProps = HeroAssetProps & {
+	motionEnabled?: boolean;
+};
+
+export function PosterFleetAlphaArrow({
+	reducedMotion,
+	motionEnabled = true,
+}: FleetHeroAssetProps) {
 	return (
 		<PosterShipAsset
 			ariaLabel="Fleet Alpha arrow ship"
@@ -1802,6 +2368,7 @@ export function PosterFleetAlphaArrow({ reducedMotion }: HeroAssetProps) {
 			className="poster-asset--fleet-alpha"
 			drift={10}
 			duration={9}
+			motionEnabled={motionEnabled}
 			reducedMotion={reducedMotion}
 			rotation={0}
 			viewBox="0 0 520 120"
@@ -1899,7 +2466,10 @@ export function PosterFleetAlphaArrow({ reducedMotion }: HeroAssetProps) {
 	);
 }
 
-export function PosterFleetBetaDart({ reducedMotion }: HeroAssetProps) {
+export function PosterFleetBetaDart({
+	reducedMotion,
+	motionEnabled = true,
+}: FleetHeroAssetProps) {
 	return (
 		<PosterShipAsset
 			ariaLabel="Fleet Beta dart ship"
@@ -1908,6 +2478,7 @@ export function PosterFleetBetaDart({ reducedMotion }: HeroAssetProps) {
 			drift={8}
 			duration={8}
 			delay={0.45}
+			motionEnabled={motionEnabled}
 			reducedMotion={reducedMotion}
 			rotation={-1}
 			viewBox="0 0 260 96"
@@ -1951,7 +2522,10 @@ export function PosterFleetBetaDart({ reducedMotion }: HeroAssetProps) {
 	);
 }
 
-export function PosterFleetGammaShuttle({ reducedMotion }: HeroAssetProps) {
+export function PosterFleetGammaShuttle({
+	reducedMotion,
+	motionEnabled = true,
+}: FleetHeroAssetProps) {
 	return (
 		<PosterShipAsset
 			ariaLabel="Fleet Gamma shuttle ship"
@@ -1960,6 +2534,7 @@ export function PosterFleetGammaShuttle({ reducedMotion }: HeroAssetProps) {
 			drift={7}
 			duration={10}
 			delay={0.2}
+			motionEnabled={motionEnabled}
 			reducedMotion={reducedMotion}
 			rotation={1}
 			viewBox="0 0 360 132"
@@ -2028,7 +2603,10 @@ export function PosterFleetGammaShuttle({ reducedMotion }: HeroAssetProps) {
 	);
 }
 
-export function PosterFleetDeltaDart({ reducedMotion }: HeroAssetProps) {
+export function PosterFleetDeltaDart({
+	reducedMotion,
+	motionEnabled = true,
+}: FleetHeroAssetProps) {
 	return (
 		<PosterShipAsset
 			ariaLabel="Fleet Delta dart ship"
@@ -2037,6 +2615,7 @@ export function PosterFleetDeltaDart({ reducedMotion }: HeroAssetProps) {
 			drift={9}
 			duration={9.5}
 			delay={0.8}
+			motionEnabled={motionEnabled}
 			reducedMotion={reducedMotion}
 			rotation={-3}
 			viewBox="0 0 220 96"

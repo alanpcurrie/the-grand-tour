@@ -9,6 +9,7 @@ import {
 
 type PosterInteractiveHotspotsProps = {
 	activeHotspotId: PosterHotspotId | null;
+	guidedHotspotId?: PosterHotspotId | null;
 	selectedHotspotId: PosterHotspotId | null;
 	onClearSelection: () => void;
 	onHotspotPreviewEnd: (id: PosterHotspotId) => void;
@@ -85,6 +86,7 @@ function renderCard(
 
 export function PosterInteractiveHotspots({
 	activeHotspotId,
+	guidedHotspotId = null,
 	selectedHotspotId,
 	onClearSelection,
 	onHotspotPreviewEnd,
@@ -95,6 +97,10 @@ export function PosterInteractiveHotspots({
 	const activeHotspot = activeHotspotId
 		? (hotspotLookup.get(activeHotspotId) ?? null)
 		: null;
+	const guidedHotspot = guidedHotspotId
+		? (hotspotLookup.get(guidedHotspotId) ?? null)
+		: null;
+	const focusHotspot = activeHotspot ?? guidedHotspot;
 
 	return (
 		<div
@@ -103,6 +109,7 @@ export function PosterInteractiveHotspots({
 		>
 			{posterHotspots.map((hotspot) => {
 				const isActive = activeHotspotId === hotspot.id;
+				const isGuided = guidedHotspotId === hotspot.id;
 				const isSelected = selectedHotspotId === hotspot.id;
 
 				return (
@@ -111,7 +118,9 @@ export function PosterInteractiveHotspots({
 						type="button"
 						className={`poster-hotspot poster-hotspot--${hotspot.kind}${
 							isActive ? " poster-hotspot--active" : ""
-						}${isSelected ? " poster-hotspot--selected" : ""}`}
+						}${isSelected ? " poster-hotspot--selected" : ""}${
+							isGuided ? " poster-hotspot--guided" : ""
+						}`}
 						style={frameStyle(hotspot.triggerFrame, hotspot.accent)}
 						aria-label={`${hotspot.title} hotspot`}
 						aria-pressed={isSelected}
@@ -130,6 +139,13 @@ export function PosterInteractiveHotspots({
 											opacity: [0.34, 0.78, 0.34],
 											scale: [0.88, 1.12, 0.88],
 										}
+									: isGuided
+										? reducedMotion
+											? { opacity: 0.24, scale: 1.02 }
+											: {
+													opacity: [0.18, 0.42, 0.18],
+													scale: [0.94, 1.08, 0.94],
+											}
 									: reducedMotion
 										? { opacity: 0.18, scale: 1 }
 										: {
@@ -138,7 +154,7 @@ export function PosterInteractiveHotspots({
 											}
 							}
 							transition={{
-								duration: isActive ? 1.8 : 3.8,
+								duration: isActive ? 1.8 : isGuided ? 2.6 : 3.8,
 								repeat: Number.POSITIVE_INFINITY,
 								ease: "easeInOut",
 							}}
@@ -149,10 +165,12 @@ export function PosterInteractiveHotspots({
 			})}
 
 			<AnimatePresence>
-				{activeHotspot ? (
+				{focusHotspot ? (
 					<motion.div
-						className={`poster-hotspot-focus poster-hotspot-focus--${activeHotspot.kind}`}
-						style={frameStyle(activeHotspot.focusFrame, activeHotspot.accent)}
+						className={`poster-hotspot-focus poster-hotspot-focus--${focusHotspot.kind}${
+							activeHotspot === null && guidedHotspot ? " poster-hotspot-focus--guided" : ""
+						}`}
+						style={frameStyle(focusHotspot.focusFrame, focusHotspot.accent)}
 						initial={{ opacity: 0, scale: 0.94 }}
 						animate={{ opacity: 1, scale: 1 }}
 						exit={{ opacity: 0, scale: 0.97 }}

@@ -72,34 +72,34 @@ export const posterCopy = {
 } as const;
 
 export const platformHighlights = [
-	"Astro shell",
-	"React island",
-	"Motion choreography",
-	"Three.js ready",
-	"TypeScript strict",
-	"Bun workflows",
+	"Window-seat views",
+	"Ring-side cruising",
+	"Golden departures",
+	"Starlit stopovers",
+	"Postcard planets",
+	"Twilight flybys",
 ] as const;
 
 export const buildPhases = [
 	{
-		title: "Static poster study",
+		title: "Departure lounge",
 		detail:
-			"Lock composition, scale, palette, and typography before the fancy stuff shows up in a cape.",
+			"Find your seat, unfold the star map, and let the colors of the route settle in before lift-off.",
 	},
 	{
-		title: "Ambient motion pass",
+		title: "Promenade deck",
 		detail:
-			"Add subtle drift, glow breathing, and ship motion that keeps the poster feeling alive but still print-first.",
+			"Watch golden lanes, gentle glows, and passing ships turn the poster into a living window on the voyage.",
 	},
 	{
-		title: "Interactive depth",
+		title: "Guided sightings",
 		detail:
-			"Introduce hotspots, focus states, and overlays for planets, ships, and route details.",
+			"Linger over notable worlds, elegant craft, and secret routes for little discoveries along the way.",
 	},
 	{
-		title: "Scroll story mode",
+		title: "Storybook excursion",
 		detail:
-			"Map the viewer journey into chapters with parallax, line travel, and planet-based reveals.",
+			"Follow the journey from planet to planet as the grand itinerary opens like a beautifully stamped travel journal.",
 	},
 ] as const;
 
