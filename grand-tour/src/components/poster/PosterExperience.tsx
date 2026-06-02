@@ -97,7 +97,7 @@ export default function PosterExperience() {
 			return audioElementRef.current;
 		}
 
-		const soundtrack = new Audio(`${import.meta.env.BASE_URL}Giant%20Swing%20Low.mp3`);
+		const soundtrack = new Audio(`${import.meta.env.BASE_URL}/Giant%20Swing%20Low.mp3`.replace(/\/+/g, "/"));
 		soundtrack.preload = "metadata";
 
 		const handleEnded = () => {
